@@ -25,7 +25,7 @@ AFPCharacter::AFPCharacter(const FObjectInitializer& ObjectInitializer) : Super(
 	// Create Spring Arm Component
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(GetCapsuleComponent());
-	SpringArm->SetWorldLocation(FVector(0, 0, -30));
+	SpringArm->SetWorldLocation(FVector(0, 0, 10)); 
 	SpringArm->TargetArmLength = 0;
 	SpringArm->bEnableCameraLag = true;
 	SpringArm->bEnableCameraRotationLag = true;
