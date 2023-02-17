@@ -3,17 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FPCharacter.h"
+#include "GameFramework/Pawn.h"
 #include "DummyPawn.generated.h"
 
 UCLASS()
-class BASE_API ADummyPawn : public AFPCharacter
+class BASE_API ADummyPawn : public APawn
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this pawn's properties
-	ADummyPawn(const FObjectInitializer& ObjectInitializer);
+	ADummyPawn();
 
 protected:
 	// Called when the game starts or when spawned
@@ -22,9 +22,6 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintCallable, Category = Dummy)
 	// Called to destroy the dummy (with an effect of particle)
