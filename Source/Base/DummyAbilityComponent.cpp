@@ -54,6 +54,7 @@ void UDummyAbilityComponent::OnDeactivated(UActorComponent* Component)
 	if (IsValid(dummyProjection)) {
 		dummyProjection->Destroy();
 	}
+	leftActionUsed = false;
 	AMainCharacter* owner = Cast<AMainCharacter>(GetOwner());
 	owner->AbilityMeshHand->SetStaticMesh(nullptr);
 	owner->AbilityMeshHand->SetVisibility(false);
