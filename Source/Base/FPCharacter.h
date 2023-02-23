@@ -116,6 +116,8 @@ public:
 	// Getter and setters
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FPCamera; }
 
+	USpringArmComponent* GetSpringArmComponent() const { return SpringArm; }
+
 	// Character movements
 	void LookUpAndDown(float);
 	void LookRightAndLeft(float);
