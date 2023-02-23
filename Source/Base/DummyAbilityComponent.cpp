@@ -24,8 +24,10 @@ UDummyAbilityComponent::UDummyAbilityComponent() : Super()
 	maxAngleValue = 43.0f;
 
 	ConstructorHelpers::FObjectFinder<UStaticMesh> CubeVisualAsset(TEXT("/Game/DummyPower/dummyMeshPawn.dummyMeshPawn"));
-	if (CubeVisualAsset.Succeeded())
+	if (CubeVisualAsset.Succeeded()) {
+		UE_LOG(LogClass, Log, TEXT("Mesh found"));
 		AbilityMesh = CubeVisualAsset.Object;
+	}
 }
 
 // Called when the game starts or when spawned
