@@ -55,6 +55,10 @@ class BASE_API AFPCharacter : public ANinjaCharacter
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
 		bool bCanMoveCamera = true;
 
+		// Can move lean
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		bool bCanLean = true;
+
 	// ===== CHARACTER =====
 	
 		// Character speed
@@ -64,6 +68,9 @@ class BASE_API AFPCharacter : public ANinjaCharacter
 		float CrouchedWalkSpeed = 150;
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
 		float RunSpeed = 600;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		float LeanSpeed2 = 4.0f;
+		float LeanT2 = 0.0f;
 
 		//Character leaning
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
@@ -131,6 +138,8 @@ public:
 	void LeanRightReleased();
 	void LeanLeftPressed();
 	void LeanLeftReleased();
+	void LeanMovement(float);
+	void CameraLean();
 
 	// Character actions events
 	void LeftActionPressed();

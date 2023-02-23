@@ -130,6 +130,7 @@ void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	// FPCharacter movements inputs
 	PlayerInputComponent->BindAxis("Forward/Backward", this, &AFPCharacter::MoveForwardBackward);
 	PlayerInputComponent->BindAxis("Right/Left", this, &AFPCharacter::MoveRightLeft);
+	PlayerInputComponent->BindAxis("Lean", this, &AFPCharacter::LeanMovement);
 
 	// FPCharacter special movements inputs
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AFPCharacter::Sprint);
@@ -180,6 +181,36 @@ void AFPCharacter::MoveRightLeft(float Value)
 	FRotator Rot = FRotator(0, GetControlRotation().Yaw, 0);
 	FVector WorldDirection = FRotationMatrix(Rot).GetScaledAxis(EAxis::Y);
 	AddMovementInput(this->GetActorRightVector(), Value);
+}
+
+void AFPCharacter::LeanMovement(float Value) {
+	UTools::PrintMessageInLog(FString::SanitizeFloat(Value));
+	if (bCanLean && FMath::Abs(Value) > 0.1f) {
+		LeanT2 += Value * LeanSpeed2 * FApp::GetDeltaTime();
+		LeanT2 = FMath::Clamp(LeanT2, -1.0f, 1.0f);
+	}
+	else {
+		LeanT2 += FMath::Sign(LeanT2) * LeanSpeed2 * FApp::GetDeltaTime() * -1.0f;
+		if (FMath::Abs(LeanT2) < 0.1f)
+			LeanT2 = 0.0f;
+	}
+	CameraLean();
+}
+
+void AFPCharacter::CameraLean() {
+	if (LeanT2 >= 0.0f) {
+
+	}
+	else {
+
+	}
+
+	//Test collision
+	if (false) {
+
+
+		CameraLean();
+	}
 }
 
 void AFPCharacter::Sprint()
