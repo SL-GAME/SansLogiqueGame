@@ -19,13 +19,15 @@ UDummyAbilityComponent::UDummyAbilityComponent() : Super()
 	leftActionUsed = false;
 	dummyProjection = nullptr;
 	MeshPosition = FVector(0.02f, 0.02f, -0.03f);
-	MeshRotation = FVector(90.0f, -15.0f, 0.0f);
-	MeshScale = FVector(0.01f, 0.01f, 0.01f);
+	MeshRotation = FVector(0.0f, -15.0f, 0.0f);
+	MeshScale = FVector(0.002f, 0.002f, 0.002f);
 	maxAngleValue = 43.0f;
 
-	ConstructorHelpers::FObjectFinder<UStaticMesh> CubeVisualAsset(TEXT("/Game/DummyPower/dummyMesh.dummyMesh"));
-	if (CubeVisualAsset.Succeeded())
+	ConstructorHelpers::FObjectFinder<UStaticMesh> CubeVisualAsset(TEXT("/Game/DummyPower/dummyMeshPawn.dummyMeshPawn"));
+	if (CubeVisualAsset.Succeeded()) {
+		UE_LOG(LogClass, Log, TEXT("Mesh found"));
 		AbilityMesh = CubeVisualAsset.Object;
+	}
 }
 
 // Called when the game starts or when spawned
