@@ -80,7 +80,8 @@ class BASE_API AFPCharacter : public ANinjaCharacter
 		float LeanT = 0.0f;
 
 		// Character movements booleans
-		bool bIsCrouched = false;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		bool IsCrouched = false;
 		bool bIsLeaningRight = false;
 		bool bIsLeaningLeft = false;
 		bool bIsSprinting = false;
@@ -133,6 +134,7 @@ public:
 
 	// Character special movements
 	void Sprint();
+	UFUNCTION(BlueprintCallable, Category = "Character")
 	void CrouchDown();
 	void LeanRightPressed();
 	void LeanRightReleased();

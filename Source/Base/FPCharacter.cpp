@@ -205,7 +205,7 @@ void AFPCharacter::CameraLean() {
 
 void AFPCharacter::Sprint()
 {
-	if (!bIsSprinting && !bIsCrouched) {
+	if (!bIsSprinting && !IsCrouched) {
 		ToggleRunningState();
 	}
 	else if(bIsSprinting) {
@@ -222,17 +222,17 @@ void AFPCharacter::CrouchDown()
 		
 		if (!GetCharacterMovement()->IsFalling()) { // If the character isn't currently jumping
 
-			if (bIsCrouched) {
+			if (IsCrouched) {
 
 				GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
 				T_GetUp.PlayFromStart();
-				bIsCrouched = false;
+				IsCrouched = false;
 			}
 			else {
 
 				GetCharacterMovement()->MaxWalkSpeed = CrouchedWalkSpeed;
 				T_Crouch.PlayFromStart();
-				bIsCrouched = true;
+				IsCrouched = true;
 			}
 		}
 	}
