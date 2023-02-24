@@ -245,33 +245,33 @@ void AFPCharacter::CrouchDown()
 
 void AFPCharacter::LeanLeftPressed() {
 	
+	bIsLeaningLeft = true;
 	if (!bIsLeaningRight) {
 		bCanMoveCamera = false;
-		bIsLeaningLeft = true;
 	}
 }
 
 void AFPCharacter::LeanLeftReleased() {
 	
-	if (!bIsLeaningRight) {
+	bIsLeaningLeft = false;
+	if (!bIsLeaningRight && bCanLean) {
 		bCanMoveCamera = true;
-		bIsLeaningLeft = false;
 	}
 }
 
 void AFPCharacter::LeanRightPressed() {
 
+	bIsLeaningRight = true;
 	if (!bIsLeaningLeft) {
 		bCanMoveCamera = false;
-		bIsLeaningRight = true;
 	}
 }
 
 void AFPCharacter::LeanRightReleased() {
 	
-	if (!bIsLeaningLeft) {
+	bIsLeaningRight = false;
+	if (!bIsLeaningLeft && bCanLean) {
 		bCanMoveCamera = true;
-		bIsLeaningRight = false;
 	}
 }
 
