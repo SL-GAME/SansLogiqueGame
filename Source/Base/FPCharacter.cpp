@@ -15,6 +15,7 @@
 #include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "Tools.h"
 #include "CustomCharacterMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 AFPCharacter::AFPCharacter(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer.SetDefaultSubobjectClass<UCustomCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -86,20 +87,6 @@ void AFPCharacter::BeginPlay()
 		UTools::PrintErrorInLog("No CrouchCurve defined for this character.");
 	}
 
-	if (LeaningCurve) {
-
-		TimelineProgress.BindUFunction(this, FName("LeanLeftProgress"));
-		T_LeanLeft.AddInterpFloat(LeaningCurve, TimelineProgress);
-		T_LeanLeft.SetLooping(false);
-
-		TimelineProgress.BindUFunction(this, FName("LeanRightProgress"));
-		T_LeanRight.AddInterpFloat(LeaningCurve, TimelineProgress);
-		T_LeanRight.SetLooping(false);
-	}
-	else {
-		UTools::PrintErrorInLog("No LeaningCurve defined for this character.");
-	}
-
 }
 
 // Called every frame
@@ -110,8 +97,6 @@ void AFPCharacter::Tick(float DeltaTime)
 	// Timelines
 	T_Crouch.TickTimeline(DeltaTime);
 	T_GetUp.TickTimeline(DeltaTime);
-	T_LeanLeft.TickTimeline(DeltaTime);
-	T_LeanRight.TickTimeline(DeltaTime);
 }
 
 // Called to bind functionality to input
@@ -135,10 +120,10 @@ void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	// FPCharacter special movements inputs
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AFPCharacter::Sprint);
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AFPCharacter::CrouchDown);
-	//PlayerInputComponent->BindAction("LeanRight", IE_Pressed, this, &AFPCharacter::LeanRightPressed);
-	//PlayerInputComponent->BindAction("LeanRight", IE_Released, this, &AFPCharacter::LeanRightReleased);
-	//PlayerInputComponent->BindAction("LeanLeft", IE_Pressed, this, &AFPCharacter::LeanLeftPressed);
-	//PlayerInputComponent->BindAction("LeanLeft", IE_Released, this, &AFPCharacter::LeanLeftReleased);
+	PlayerInputComponent->BindAction("LeanRight", IE_Pressed, this, &AFPCharacter::LeanRightPressed);
+	PlayerInputComponent->BindAction("LeanRight", IE_Released, this, &AFPCharacter::LeanRightReleased);
+	PlayerInputComponent->BindAction("LeanLeft", IE_Pressed, this, &AFPCharacter::LeanLeftPressed);
+	PlayerInputComponent->BindAction("LeanLeft", IE_Released, this, &AFPCharacter::LeanLeftReleased);
 
 	// FPCharacter actions inputs
 	PlayerInputComponent->BindAction("LeftAction", IE_Pressed, this, &AFPCharacter::LeftActionPressed);
@@ -183,32 +168,37 @@ void AFPCharacter::MoveRightLeft(float Value)
 	AddMovementInput(this->GetActorRightVector(), Value);
 }
 
+// Calcul new lean progression depending axis input value
 void AFPCharacter::LeanMovement(float Value) {
-	UTools::PrintMessageInLog(FString::SanitizeFloat(Value));
+
 	if (bCanLean && FMath::Abs(Value) > 0.1f) {
-		LeanT2 += Value * LeanSpeed2 * FApp::GetDeltaTime();
-		LeanT2 = FMath::Clamp(LeanT2, -1.0f, 1.0f);
+		LeanT += Value * LeanSpeed * FApp::GetDeltaTime();
+		LeanT = FMath::Clamp(LeanT, -1.0f, 1.0f);
 	}
 	else {
-		LeanT2 += FMath::Sign(LeanT2) * LeanSpeed2 * FApp::GetDeltaTime() * -1.0f;
-		if (FMath::Abs(LeanT2) < 0.1f)
-			LeanT2 = 0.0f;
+		LeanT += FMath::Sign(LeanT) * LeanSpeed * FApp::GetDeltaTime() * -1.0f;
+		if (FMath::Abs(LeanT) < 0.1f)
+			LeanT = 0.0f;
 	}
 	CameraLean();
 }
 
+// Apply lean progression to the camera
 void AFPCharacter::CameraLean() {
-	if (LeanT2 >= 0.0f) {
+	FTransform newTransform;
 
-	}
-	else {
+	if (LeanT >= 0.0f) 
+		newTransform = UKismetMathLibrary::TLerp(FTransform::Identity, RightLeanTransform, LeanT);
+	else 
+		newTransform = UKismetMathLibrary::TLerp(FTransform::Identity, RightLeanTransform, LeanT);
 
-	}
+	FPCamera->SetRelativeTransform(newTransform);
 
-	//Test collision
-	if (false) {
-
-
+	FHitResult CollisionResult;
+	const bool Collision = UKismetSystemLibrary::SphereTraceSingle(this, FPCamera->GetComponentLocation(), FPCamera->GetComponentLocation(), 16.0f, UEngineTypes::ConvertToTraceType(ECC_Camera), false, TArray<AActor*>(), EDrawDebugTrace::None, CollisionResult, true);
+	if (Collision) {
+		LeanT += FMath::Sign(LeanT) * LeanSpeed * FApp::GetDeltaTime() * -1.0f;
+		LeanT = FMath::Clamp(LeanT, -1.0f, 1.0f);
 		CameraLean();
 	}
 }
@@ -258,7 +248,6 @@ void AFPCharacter::LeanLeftPressed() {
 	if (!bIsLeaningRight) {
 		bCanMoveCamera = false;
 		bIsLeaningLeft = true;
-		T_LeanLeft.PlayFromStart();
 	}
 }
 
@@ -267,7 +256,6 @@ void AFPCharacter::LeanLeftReleased() {
 	if (!bIsLeaningRight) {
 		bCanMoveCamera = true;
 		bIsLeaningLeft = false;
-		T_LeanLeft.Reverse();
 	}
 }
 
@@ -276,7 +264,6 @@ void AFPCharacter::LeanRightPressed() {
 	if (!bIsLeaningLeft) {
 		bCanMoveCamera = false;
 		bIsLeaningRight = true;
-		T_LeanRight.PlayFromStart();
 	}
 }
 
@@ -285,7 +272,6 @@ void AFPCharacter::LeanRightReleased() {
 	if (!bIsLeaningLeft) {
 		bCanMoveCamera = true;
 		bIsLeaningRight = false;
-		T_LeanRight.Reverse();
 	}
 }
 
@@ -377,20 +363,3 @@ void AFPCharacter::CrouchProgress(float Value)
 	GetCapsuleComponent()->SetCapsuleHalfHeight(NewValue);
 }
 
-// Called by timeline to have a prgressive leaning left movement
-void AFPCharacter::LeanLeftProgress(float Value)
-{
-	FRotator DefaultRotation = FRotator(0, 0, 0);
-	FRotator FinalRotation = FRotator(0, 0, -LeaningAngle);
-	FRotator NewValue = FMath::Lerp(DefaultRotation, FinalRotation, Value);
-	SpringArm->SetRelativeRotation(NewValue);
-}
-
-// Called by timeline to have a prgressive leaning right movement
-void AFPCharacter::LeanRightProgress(float Value)
-{
-	FRotator DefaultRotation = FRotator(0, 0, 0);
-	FRotator FinalRotation = FRotator(0, 0, LeaningAngle);
-	FRotator NewValue = FMath::Lerp(DefaultRotation, FinalRotation, Value);
-	SpringArm->SetRelativeRotation(NewValue);
-}

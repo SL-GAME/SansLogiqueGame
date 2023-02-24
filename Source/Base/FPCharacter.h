@@ -68,13 +68,16 @@ class BASE_API AFPCharacter : public ANinjaCharacter
 		float CrouchedWalkSpeed = 150;
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
 		float RunSpeed = 600;
-		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
-		float LeanSpeed2 = 4.0f;
-		float LeanT2 = 0.0f;
+		
 
 		//Character leaning
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
-		float LeaningAngle = 40;
+		float LeanSpeed = 4.0f;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		FTransform RightLeanTransform;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		FTransform LeftLeanTransform;
+		float LeanT = 0.0f;
 
 		// Character movements booleans
 		bool bIsCrouched = false;
@@ -97,8 +100,6 @@ protected:
 		
 		FTimeline T_GetUp;
 		FTimeline T_Crouch;
-		FTimeline T_LeanLeft;
-		FTimeline T_LeanRight;
 
 	// ===== CURVES =====
 
@@ -106,8 +107,7 @@ protected:
 		UCurveFloat* GetUpCurve;
 		UPROPERTY(EditAnywhere)
 		UCurveFloat* CrouchCurve;
-		UPROPERTY(EditAnywhere)
-		UCurveFloat* LeaningCurve;
+
 
 public:
 	
@@ -152,10 +152,6 @@ public:
 		void GetUpProgress(float Value);
 	UFUNCTION()
 		void CrouchProgress(float Value);
-	UFUNCTION()
-		void LeanLeftProgress(float Value);
-	UFUNCTION()
-		void LeanRightProgress(float Value);
 
 	// Others functions
 	void DisableCameraLag();
