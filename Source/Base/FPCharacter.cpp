@@ -177,14 +177,18 @@ void AFPCharacter::LeanMovement(float Value) {
 	}
 	else {
 		LeanT += FMath::Sign(LeanT) * LeanSpeed * FApp::GetDeltaTime() * -1.0f;
-		if (FMath::Abs(LeanT) < 0.1f)
+		if (FMath::Abs(LeanT) < LeanReset)
 			LeanT = 0.0f;
 	}
-	CameraLean();
+	CameraLean(MaxLeanIteration);
 }
 
 // Apply lean progression to the camera
-void AFPCharacter::CameraLean() {
+void AFPCharacter::CameraLean(int iteration) {
+
+	if (iteration < 0)
+		return;
+
 	FTransform newTransform;
 
 	if (LeanT >= 0.0f) 
@@ -199,7 +203,7 @@ void AFPCharacter::CameraLean() {
 	if (Collision) {
 		LeanT += FMath::Sign(LeanT) * LeanSpeed * FApp::GetDeltaTime() * -1.0f;
 		LeanT = FMath::Clamp(LeanT, -1.0f, 1.0f);
-		CameraLean();
+		CameraLean(iteration - 1);
 	}
 }
 

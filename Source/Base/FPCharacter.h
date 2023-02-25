@@ -74,6 +74,10 @@ class BASE_API AFPCharacter : public ANinjaCharacter
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
 		float LeanSpeed = 4.0f;
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		float LeanReset = 0.1f;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		int MaxLeanIteration = 100;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
 		FTransform RightLeanTransform;
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
 		FTransform LeftLeanTransform;
@@ -141,7 +145,7 @@ public:
 	void LeanLeftPressed();
 	void LeanLeftReleased();
 	void LeanMovement(float);
-	void CameraLean();
+	void CameraLean(int iteration);
 
 	// Character actions events
 	void LeftActionPressed();
