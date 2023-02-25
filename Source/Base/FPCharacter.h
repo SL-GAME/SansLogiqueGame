@@ -82,6 +82,7 @@ class BASE_API AFPCharacter : public ANinjaCharacter
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
 		FTransform LeftLeanTransform;
 		float LeanT = 0.0f;
+		float PreviousLeanT = 0.0f;
 
 		// Character movements booleans
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
