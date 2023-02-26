@@ -183,6 +183,8 @@ void AFPCharacter::LeanMovement(float Value) {
 
 	if(LeanT != PreviousLeanT)
 		CameraLean(MaxLeanIteration);
+	else
+		CameraLean(1);
 
 	PreviousLeanT = LeanT;
 }
