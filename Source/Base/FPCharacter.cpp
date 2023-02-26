@@ -181,10 +181,8 @@ void AFPCharacter::LeanMovement(float Value) {
 			LeanT = 0.0f;
 	}
 
-	if(LeanT != PreviousLeanT)
+	if(LeanT != PreviousLeanT || FMath::Abs(LeanT) > LeanReset)
 		CameraLean(MaxLeanIteration);
-	else
-		CameraLean(1);
 
 	PreviousLeanT = LeanT;
 }
