@@ -207,6 +207,10 @@ public:
 	void DisableCameraLag();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
 		void EnableCameraLag();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
+		void EnableVignetteWhenCrouched();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
+		void DisableVignetteWhenCrouched();
 	void SetCurrentAbility(UPlayerAbilityComponent* newAbility);
 	void ToggleRunningState();
 

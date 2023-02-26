@@ -243,12 +243,14 @@ void AFPCharacter::CrouchDown()
 				GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
 				T_GetUp.PlayFromStart();
 				IsCrouched = false;
+				DisableVignetteWhenCrouched();
 			}
 			else {
 
 				GetCharacterMovement()->MaxWalkSpeed = CrouchedWalkSpeed;
 				T_Crouch.PlayFromStart();
 				IsCrouched = true;
+				EnableVignetteWhenCrouched();
 			}
 		}
 	}
@@ -362,6 +364,14 @@ void AFPCharacter::RightActionReleased()
 
 //Enable camera lag caused by spring arm
 void AFPCharacter::EnableCameraLag_Implementation()
+{
+}
+
+void AFPCharacter::EnableVignetteWhenCrouched_Implementation()
+{
+}
+
+void AFPCharacter::DisableVignetteWhenCrouched_Implementation()
 {
 }
 
