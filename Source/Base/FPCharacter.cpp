@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 //#include "Components/TimelineComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SceneComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -34,9 +35,14 @@ AFPCharacter::AFPCharacter(const FObjectInitializer& ObjectInitializer) : Super(
 	SpringArm->CameraRotationLagSpeed = 20;
 	SpringArm->bUsePawnControlRotation = false;
 
+	// Create HeadBobbing SceneComponent
+	HeadBobbingComponent = CreateDefaultSubobject<USceneComponent>(TEXT("HeadBobbing"));
+	HeadBobbingComponent->SetupAttachment(SpringArm);
+	HeadBobbingComponent->SetRelativeLocation(FVector::ZeroVector);
+
 	// Create CameraComponent    
 	FPCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FPCamera"));
-	FPCamera->SetupAttachment(SpringArm);
+	FPCamera->SetupAttachment(HeadBobbingComponent);
 	FPCamera->SetWorldLocation(FVector(0, 0, 60));
 	FPCamera->bUsePawnControlRotation = true;
 
@@ -93,6 +99,9 @@ void AFPCharacter::BeginPlay()
 void AFPCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (bEnableHeadBobbing)
+		HeadBobbing();
 
 	// Timelines
 	T_Crouch.TickTimeline(DeltaTime);
@@ -370,3 +379,35 @@ void AFPCharacter::CrouchProgress(float Value)
 	GetCapsuleComponent()->SetCapsuleHalfHeight(NewValue);
 }
 
+void AFPCharacter::HeadBobbing() {
+
+	if (GetCharacterMovement()->IsFalling())
+		return;
+
+	FVector newBobbing;
+
+	if (GetVelocity().Length() > 1.0f) {
+
+		if (bIsCrouched) {
+			BobbingT += FApp::GetDeltaTime() * SpeedCrouchingBobbing;
+			newBobbing = FVector(0.0f, FMath::Cos(BobbingT) * yCrouchingBobbing, FMath::Sin(BobbingT * 2.0f) * zCrouchingBobbing);
+		}
+		else if (bIsSprinting) {
+			BobbingT += FApp::GetDeltaTime() * SpeedSprintingBobbing;
+			newBobbing = FVector(0.0f, FMath::Cos(BobbingT) * ySprintingBobbing, FMath::Sin(BobbingT * 2.0f) * zSprintingBobbing);
+		}
+		else {
+			BobbingT += FApp::GetDeltaTime() * SpeedWalkingBobbing;
+			newBobbing = FVector(0.0f, FMath::Cos(BobbingT) * yWalkingBobbing, FMath::Sin(BobbingT * 2.0f) * zWalkingBobbing);
+		}
+	}
+	else {
+		BobbingT += FApp::GetDeltaTime() * SpeedBreathingBobbing;
+		newBobbing = FVector(0.0f, FMath::Cos(BobbingT) * yBreathingBobbing, FMath::Sin(BobbingT * 2.0f) * zBreathingBobbing);
+	}
+
+	HeadBobbingComponent->SetRelativeLocation(newBobbing);// HeadBobbingComponent->GetRelativeLocation() + newBobbing);
+
+	if (BobbingT > 99.0f)
+		BobbingT = 0.0f;
+}
