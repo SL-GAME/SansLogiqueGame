@@ -23,7 +23,7 @@ UDummyAbilityComponent::UDummyAbilityComponent() : Super()
 	MeshScale = FVector(0.002f, 0.002f, 0.002f);
 	maxAngleValue = 43.0f;
 
-	ConstructorHelpers::FObjectFinder<UStaticMesh> CubeVisualAsset(TEXT("/Game/DummyPower/dummyMeshPawn.dummyMeshPawn"));
+	ConstructorHelpers::FObjectFinder<UStaticMesh> CubeVisualAsset(TEXT("/Game/Characters/MainCharacter/MainCharacterComponents/Abilities/DummyAbility/dummyMeshPawn.dummyMeshPawn"));
 	if (CubeVisualAsset.Succeeded()) {
 		UE_LOG(LogClass, Log, TEXT("Mesh found"));
 		AbilityMesh = CubeVisualAsset.Object;
