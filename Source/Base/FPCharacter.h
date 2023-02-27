@@ -17,6 +17,7 @@ class UPlayerAbilityComponent;
 class UPhysicsHandleComponent;
 class UPortalManagerComponent;
 class UDummyAbilityComponent;
+class USceneComponent;
 
 UCLASS()
 class BASE_API AFPCharacter : public ANinjaCharacter
@@ -55,6 +56,10 @@ class BASE_API AFPCharacter : public ANinjaCharacter
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
 		bool bCanMoveCamera = true;
 
+		// Can move lean
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		bool bCanLean = true;
+
 	// ===== CHARACTER =====
 	
 		// Character speed
@@ -64,10 +69,62 @@ class BASE_API AFPCharacter : public ANinjaCharacter
 		float CrouchedWalkSpeed = 150;
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
 		float RunSpeed = 600;
+		
 
 		//Character leaning
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
-		float LeaningAngle = 40;
+		float LeanSpeed = 4.0f;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		float LeanReset = 0.1f;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		int MaxLeanIteration = 100;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		FTransform RightLeanTransform;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		FTransform LeftLeanTransform;
+		float LeanT = 0.0f;
+		float PreviousLeanT = 0.0f;
+
+		//Head Bobbing
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		USceneComponent* HeadBobbingComponent;
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		bool bEnableHeadBobbing = true;
+
+		float BobbingT = 0.0f;
+
+		//Breathing Bobbing
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		float yBreathingBobbing = 0.0f;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		float zBreathingBobbing = 0.0f;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		float SpeedBreathingBobbing = 0.0f;
+
+		//Breathing Bobbing
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		float yWalkingBobbing = 0.0f;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		float zWalkingBobbing = 0.0f;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		float SpeedWalkingBobbing = 0.0f;
+
+		//Crouching Bobbing
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		float yCrouchingBobbing = 0.0f;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		float zCrouchingBobbing = 0.0f;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		float SpeedCrouchingBobbing = 0.0f;
+
+		//Sprinting Bobbing
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		float ySprintingBobbing = 0.0f;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		float zSprintingBobbing = 0.0f;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		float SpeedSprintingBobbing = 0.0f;
+
 
 		// Character movements booleans
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
@@ -91,8 +148,6 @@ protected:
 		
 		FTimeline T_GetUp;
 		FTimeline T_Crouch;
-		FTimeline T_LeanLeft;
-		FTimeline T_LeanRight;
 
 	// ===== CURVES =====
 
@@ -100,8 +155,7 @@ protected:
 		UCurveFloat* GetUpCurve;
 		UPROPERTY(EditAnywhere)
 		UCurveFloat* CrouchCurve;
-		UPROPERTY(EditAnywhere)
-		UCurveFloat* LeaningCurve;
+
 
 public:
 	
@@ -117,6 +171,8 @@ public:
 	// Getter and setters
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FPCamera; }
 
+	USpringArmComponent* GetSpringArmComponent() const { return SpringArm; }
+
 	// Character movements
 	void LookUpAndDown(float);
 	void LookRightAndLeft(float);
@@ -131,6 +187,9 @@ public:
 	void LeanRightReleased();
 	void LeanLeftPressed();
 	void LeanLeftReleased();
+	void LeanMovement(float);
+	void CameraLean(int iteration);
+	void HeadBobbing();
 
 	// Character actions events
 	void LeftActionPressed();
@@ -143,15 +202,15 @@ public:
 		void GetUpProgress(float Value);
 	UFUNCTION()
 		void CrouchProgress(float Value);
-	UFUNCTION()
-		void LeanLeftProgress(float Value);
-	UFUNCTION()
-		void LeanRightProgress(float Value);
 
 	// Others functions
 	void DisableCameraLag();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
 		void EnableCameraLag();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
+		void EnableVignetteWhenCrouched();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
+		void DisableVignetteWhenCrouched();
 	void SetCurrentAbility(UPlayerAbilityComponent* newAbility);
 	void ToggleRunningState();
 

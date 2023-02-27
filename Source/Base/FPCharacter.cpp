@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 //#include "Components/TimelineComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SceneComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -15,6 +16,7 @@
 #include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "Tools.h"
 #include "CustomCharacterMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 AFPCharacter::AFPCharacter(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer.SetDefaultSubobjectClass<UCustomCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -33,9 +35,14 @@ AFPCharacter::AFPCharacter(const FObjectInitializer& ObjectInitializer) : Super(
 	SpringArm->CameraRotationLagSpeed = 20;
 	SpringArm->bUsePawnControlRotation = false;
 
+	// Create HeadBobbing SceneComponent
+	HeadBobbingComponent = CreateDefaultSubobject<USceneComponent>(TEXT("HeadBobbing"));
+	HeadBobbingComponent->SetupAttachment(SpringArm);
+	HeadBobbingComponent->SetRelativeLocation(FVector::ZeroVector);
+
 	// Create CameraComponent    
 	FPCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FPCamera"));
-	FPCamera->SetupAttachment(SpringArm);
+	FPCamera->SetupAttachment(HeadBobbingComponent);
 	FPCamera->SetWorldLocation(FVector(0, 0, 60));
 	FPCamera->bUsePawnControlRotation = true;
 
@@ -86,20 +93,6 @@ void AFPCharacter::BeginPlay()
 		UTools::PrintErrorInLog("No CrouchCurve defined for this character.");
 	}
 
-	if (LeaningCurve) {
-
-		TimelineProgress.BindUFunction(this, FName("LeanLeftProgress"));
-		T_LeanLeft.AddInterpFloat(LeaningCurve, TimelineProgress);
-		T_LeanLeft.SetLooping(false);
-
-		TimelineProgress.BindUFunction(this, FName("LeanRightProgress"));
-		T_LeanRight.AddInterpFloat(LeaningCurve, TimelineProgress);
-		T_LeanRight.SetLooping(false);
-	}
-	else {
-		UTools::PrintErrorInLog("No LeaningCurve defined for this character.");
-	}
-
 }
 
 // Called every frame
@@ -107,11 +100,12 @@ void AFPCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (bEnableHeadBobbing)
+		HeadBobbing();
+
 	// Timelines
 	T_Crouch.TickTimeline(DeltaTime);
 	T_GetUp.TickTimeline(DeltaTime);
-	T_LeanLeft.TickTimeline(DeltaTime);
-	T_LeanRight.TickTimeline(DeltaTime);
 }
 
 // Called to bind functionality to input
@@ -130,6 +124,7 @@ void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	// FPCharacter movements inputs
 	PlayerInputComponent->BindAxis("Forward/Backward", this, &AFPCharacter::MoveForwardBackward);
 	PlayerInputComponent->BindAxis("Right/Left", this, &AFPCharacter::MoveRightLeft);
+	PlayerInputComponent->BindAxis("Lean", this, &AFPCharacter::LeanMovement);
 
 	// FPCharacter special movements inputs
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AFPCharacter::Sprint);
@@ -182,6 +177,48 @@ void AFPCharacter::MoveRightLeft(float Value)
 	AddMovementInput(this->GetActorRightVector(), Value);
 }
 
+// Calcul new lean progression depending axis input value
+void AFPCharacter::LeanMovement(float Value) {
+
+	if (bCanLean && FMath::Abs(Value) > 0.1f) {
+		LeanT += Value * LeanSpeed * FApp::GetDeltaTime();
+		LeanT = FMath::Clamp(LeanT, -1.0f, 1.0f);
+	}
+	else {
+		LeanT += FMath::Sign(LeanT) * LeanSpeed * FApp::GetDeltaTime() * -1.0f;
+		if (FMath::Abs(LeanT) < LeanReset)
+			LeanT = 0.0f;
+	}
+
+	if(LeanT != PreviousLeanT || FMath::Abs(LeanT) > LeanReset)
+		CameraLean(MaxLeanIteration);
+
+	PreviousLeanT = LeanT;
+}
+
+// Apply lean progression to the camera
+void AFPCharacter::CameraLean(int iteration) {
+	if (iteration < 0)
+		return;
+
+	FTransform newTransform;
+
+	if (LeanT >= 0.0f) 
+		newTransform = UKismetMathLibrary::TLerp(FTransform::Identity, RightLeanTransform, LeanT);
+	else 
+		newTransform = UKismetMathLibrary::TLerp(FTransform::Identity, RightLeanTransform, LeanT);
+
+	FPCamera->SetRelativeTransform(newTransform);
+
+	FHitResult CollisionResult;
+	const bool Collision = UKismetSystemLibrary::SphereTraceSingle(this, FPCamera->GetComponentLocation(), FPCamera->GetComponentLocation(), 16.0f, UEngineTypes::ConvertToTraceType(ECC_Camera), false, TArray<AActor*>(), EDrawDebugTrace::None, CollisionResult, true);
+	if (Collision) {
+		LeanT += FMath::Sign(LeanT) * LeanSpeed * FApp::GetDeltaTime() * -1.0f;
+		LeanT = FMath::Clamp(LeanT, -1.0f, 1.0f);
+		CameraLean(iteration - 1);
+	}
+}
+
 void AFPCharacter::Sprint()
 {
 	if (!bIsSprinting && !IsCrouched) {
@@ -206,12 +243,14 @@ void AFPCharacter::CrouchDown()
 				GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
 				T_GetUp.PlayFromStart();
 				IsCrouched = false;
+				DisableVignetteWhenCrouched();
 			}
 			else {
 
 				GetCharacterMovement()->MaxWalkSpeed = CrouchedWalkSpeed;
 				T_Crouch.PlayFromStart();
 				IsCrouched = true;
+				EnableVignetteWhenCrouched();
 			}
 		}
 	}
@@ -224,37 +263,33 @@ void AFPCharacter::CrouchDown()
 
 void AFPCharacter::LeanLeftPressed() {
 	
+	bIsLeaningLeft = true;
 	if (!bIsLeaningRight) {
 		bCanMoveCamera = false;
-		bIsLeaningLeft = true;
-		T_LeanLeft.PlayFromStart();
 	}
 }
 
 void AFPCharacter::LeanLeftReleased() {
 	
-	if (!bIsLeaningRight) {
+	bIsLeaningLeft = false;
+	if (!bIsLeaningRight && bCanLean) {
 		bCanMoveCamera = true;
-		bIsLeaningLeft = false;
-		T_LeanLeft.Reverse();
 	}
 }
 
 void AFPCharacter::LeanRightPressed() {
 
+	bIsLeaningRight = true;
 	if (!bIsLeaningLeft) {
 		bCanMoveCamera = false;
-		bIsLeaningRight = true;
-		T_LeanRight.PlayFromStart();
 	}
 }
 
 void AFPCharacter::LeanRightReleased() {
 	
-	if (!bIsLeaningLeft) {
+	bIsLeaningRight = false;
+	if (!bIsLeaningLeft && bCanLean) {
 		bCanMoveCamera = true;
-		bIsLeaningRight = false;
-		T_LeanRight.Reverse();
 	}
 }
 
@@ -332,6 +367,14 @@ void AFPCharacter::EnableCameraLag_Implementation()
 {
 }
 
+void AFPCharacter::EnableVignetteWhenCrouched_Implementation()
+{
+}
+
+void AFPCharacter::DisableVignetteWhenCrouched_Implementation()
+{
+}
+
 // Called by timeline to have a prgressive get up movement
 void AFPCharacter::GetUpProgress(float Value)
 {
@@ -346,20 +389,35 @@ void AFPCharacter::CrouchProgress(float Value)
 	GetCapsuleComponent()->SetCapsuleHalfHeight(NewValue);
 }
 
-// Called by timeline to have a prgressive leaning left movement
-void AFPCharacter::LeanLeftProgress(float Value)
-{
-	FRotator DefaultRotation = FRotator(0, 0, 0);
-	FRotator FinalRotation = FRotator(0, 0, -LeaningAngle);
-	FRotator NewValue = FMath::Lerp(DefaultRotation, FinalRotation, Value);
-	SpringArm->SetRelativeRotation(NewValue);
-}
+void AFPCharacter::HeadBobbing() {
 
-// Called by timeline to have a prgressive leaning right movement
-void AFPCharacter::LeanRightProgress(float Value)
-{
-	FRotator DefaultRotation = FRotator(0, 0, 0);
-	FRotator FinalRotation = FRotator(0, 0, LeaningAngle);
-	FRotator NewValue = FMath::Lerp(DefaultRotation, FinalRotation, Value);
-	SpringArm->SetRelativeRotation(NewValue);
+	if (GetCharacterMovement()->IsFalling())
+		return;
+
+	FVector newBobbing;
+
+	if (GetVelocity().Length() > 1.0f) {
+
+		if (bIsCrouched) {
+			BobbingT += FApp::GetDeltaTime() * SpeedCrouchingBobbing;
+			newBobbing = FVector(0.0f, FMath::Cos(BobbingT) * yCrouchingBobbing, FMath::Sin(BobbingT * 2.0f) * zCrouchingBobbing);
+		}
+		else if (bIsSprinting) {
+			BobbingT += FApp::GetDeltaTime() * SpeedSprintingBobbing;
+			newBobbing = FVector(0.0f, FMath::Cos(BobbingT) * ySprintingBobbing, FMath::Sin(BobbingT * 2.0f) * zSprintingBobbing);
+		}
+		else {
+			BobbingT += FApp::GetDeltaTime() * SpeedWalkingBobbing;
+			newBobbing = FVector(0.0f, FMath::Cos(BobbingT) * yWalkingBobbing, FMath::Sin(BobbingT * 2.0f) * zWalkingBobbing);
+		}
+	}
+	else {
+		BobbingT += FApp::GetDeltaTime() * SpeedBreathingBobbing;
+		newBobbing = FVector(0.0f, FMath::Cos(BobbingT) * yBreathingBobbing, FMath::Sin(BobbingT * 2.0f) * zBreathingBobbing);
+	}
+
+	HeadBobbingComponent->SetRelativeLocation(newBobbing);// HeadBobbingComponent->GetRelativeLocation() + newBobbing);
+
+	if (BobbingT > 99.0f)
+		BobbingT = 0.0f;
 }

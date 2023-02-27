@@ -11,6 +11,7 @@
 #include "GameFramework/PawnMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
 APortal::APortal()
@@ -125,7 +126,7 @@ void APortal::CheckIfPlayerShouldTeleport(AFPCharacter* Player)
     b.Normalize();
     bool check2 = FVector::DotProduct(b, this->GetActorForwardVector()) < 0.0f;
     
-    if (check1 && check2)
+    if (check1 )//&& check2)
         TeleportPlayer(Player);
 }
 
@@ -142,7 +143,10 @@ void APortal::TeleportPlayer(AFPCharacter* Player)
     FTransform newT = Player->GetFirstPersonCameraComponent()->GetComponentTransform().GetRelativeTransform(BackFacingScene->GetComponentTransform());
     newT = newT * LinkedPortal->GetActorTransform();
 
-    FVector newLocation = (newT.GetLocation() - Player->GetFirstPersonCameraComponent()->GetRelativeLocation()) + (LinkedPortal->GetActorForwardVector() * 10.0f);
+    //FVector newLocation = (newT.GetLocation() - Player->GetFirstPersonCameraComponent()->GetRelativeLocation()) + (LinkedPortal->GetActorForwardVector() * 10.0f);
+    FVector newLocation = (newT.GetLocation() - Player->GetSpringArmComponent()->GetRelativeLocation()) + (LinkedPortal->GetActorForwardVector() * 10.0f);
+
+    //FVector newLocation = (newT.GetLocation()) + (LinkedPortal->GetActorForwardVector() * 10.0f);
     Player->SetActorLocation(newLocation);
 
     FRotator NewRotator = FRotator::ZeroRotator;
