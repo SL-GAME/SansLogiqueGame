@@ -7,7 +7,7 @@
 #include "DummyPawn.generated.h"
 
 UCLASS()
-class BASE_API ADummyPawn : public APawn
+class BASE_API ADummyPawn : public AActor
 {
 	GENERATED_BODY()
 
