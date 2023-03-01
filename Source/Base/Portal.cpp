@@ -144,10 +144,10 @@ void APortal::TeleportPlayer(AFPCharacter* Player)
     newT = newT * LinkedPortal->GetActorTransform();
 
     //FVector newLocation = (newT.GetLocation() - Player->GetFirstPersonCameraComponent()->GetRelativeLocation()) + (LinkedPortal->GetActorForwardVector() * 10.0f);
-    FVector newLocation = (newT.GetLocation() - Player->GetSpringArmComponent()->GetRelativeLocation()) + (LinkedPortal->GetActorForwardVector() * 10.0f);
+    FVector newLocation = (newT.GetLocation() - Player->GetSpringArmComponent()->GetRelativeLocation()) + (LinkedPortal->GetActorForwardVector() * 15.0f);
 
     //FVector newLocation = (newT.GetLocation()) + (LinkedPortal->GetActorForwardVector() * 10.0f);
-    Player->SetActorLocation(newLocation);
+    Player->SetActorLocation(newLocation, false, nullptr, ETeleportType::TeleportPhysics);
 
     FRotator NewRotator = FRotator::ZeroRotator;
     NewRotator.Pitch = newT.Rotator().Pitch;
