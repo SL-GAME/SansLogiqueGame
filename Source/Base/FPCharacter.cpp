@@ -62,6 +62,7 @@ AFPCharacter::AFPCharacter(const FObjectInitializer& ObjectInitializer) : Super(
 	//Getting default capsule size value
 	DefaultCapsuleSize = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 	CrouchedCapsuleSize = DefaultCapsuleSize / 2;
+	RaycastForGetupSize = DefaultCapsuleSize - CrouchedCapsuleSize;
 
 }
 
@@ -102,6 +103,10 @@ void AFPCharacter::Tick(float DeltaTime)
 
 	if (bEnableHeadBobbing)
 		HeadBobbing();
+
+	// Checking obstacles
+	if (IsCrouched)
+		CheckCrouchingObstacle();
 
 	// Timelines
 	T_Crouch.TickTimeline(DeltaTime);
@@ -238,7 +243,7 @@ void AFPCharacter::CrouchDown()
 		
 		if (!GetCharacterMovement()->IsFalling()) { // If the character isn't currently jumping
 
-			if (IsCrouched) {
+			if (IsCrouched && bCanGetUp) {
 
 				GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
 				T_GetUp.PlayFromStart();
@@ -420,4 +425,27 @@ void AFPCharacter::HeadBobbing() {
 
 	if (BobbingT > 99.0f)
 		BobbingT = 0.0f;
+}
+
+// Called by timeline when crouching
+void AFPCharacter::CheckCrouchingObstacle()
+{
+	// Setting the starting & ending positions of raycast. Raycast is above the head
+	FVector ActorLocation = this->GetActorLocation();
+	FVector StartingLocation = FVector(ActorLocation.X, ActorLocation.Y, ActorLocation.Z + CrouchedCapsuleSize);
+	FVector EndingLocation = StartingLocation + FVector::UpVector * RaycastForGetupSize;
+	FVector Direction = UKismetMathLibrary::GetDirectionUnitVector(StartingLocation, EndingLocation);
+	FString text = Direction.ToString();
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Direction") + text);
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Start") + StartingLocation.ToString());
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("End") + EndingLocation.ToString());
+
+	FHitResult Hit(ForceInit);
+
+	// Creating a raycast, above the head of the player. We use the height of the capsule.
+	bCanGetUp = !GetWorld()->LineTraceSingleByChannel(Hit, StartingLocation, EndingLocation, ECollisionChannel::ECC_Visibility);
+	if(bCanGetUp)
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Can get up ! "));
+	else
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Can't get up ! "));
 }
