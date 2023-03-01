@@ -104,10 +104,6 @@ void AFPCharacter::Tick(float DeltaTime)
 	if (bEnableHeadBobbing)
 		HeadBobbing();
 
-	// Checking obstacles
-	if (IsCrouched)
-		CheckCrouchingObstacle();
-
 	// Timelines
 	T_Crouch.TickTimeline(DeltaTime);
 	T_GetUp.TickTimeline(DeltaTime);
@@ -243,12 +239,18 @@ void AFPCharacter::CrouchDown()
 		
 		if (!GetCharacterMovement()->IsFalling()) { // If the character isn't currently jumping
 
-			if (IsCrouched && bCanGetUp) {
-
-				GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
-				T_GetUp.PlayFromStart();
-				IsCrouched = false;
-				DisableVignetteWhenCrouched();
+			if (IsCrouched)
+			{		
+				// Checking obstacles
+				CheckCrouchingObstacle();
+				if (bCanGetUp)
+				{
+					GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
+					T_GetUp.PlayFromStart();
+					IsCrouched = false;
+					DisableVignetteWhenCrouched();
+					bCanGetUp = false;
+				}
 			}
 			else {
 
@@ -435,17 +437,12 @@ void AFPCharacter::CheckCrouchingObstacle()
 	FVector StartingLocation = FVector(ActorLocation.X, ActorLocation.Y, ActorLocation.Z + CrouchedCapsuleSize);
 	FVector EndingLocation = StartingLocation + FVector::UpVector * RaycastForGetupSize;
 	FVector Direction = UKismetMathLibrary::GetDirectionUnitVector(StartingLocation, EndingLocation);
-	FString text = Direction.ToString();
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Direction") + text);
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Start") + StartingLocation.ToString());
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("End") + EndingLocation.ToString());
 
+	// Configure the sphere
+	FCollisionShape MySphere = FCollisionShape::MakeSphere(30.0f); // 5M Radius
 	FHitResult Hit(ForceInit);
+	TArray<FHitResult> OutResults;
 
 	// Creating a raycast, above the head of the player. We use the height of the capsule.
-	bCanGetUp = !GetWorld()->LineTraceSingleByChannel(Hit, StartingLocation, EndingLocation, ECollisionChannel::ECC_Visibility);
-	if(bCanGetUp)
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Can get up ! "));
-	else
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Can't get up ! "));
+	bCanGetUp = !GetWorld()->SweepMultiByChannel(OutResults, StartingLocation, EndingLocation, FQuat::Identity, ECollisionChannel::ECC_Visibility, MySphere);
 }
