@@ -29,6 +29,7 @@ class BASE_API AFPCharacter : public ANinjaCharacter
 		// Capsule size
 		float DefaultCapsuleSize;
 		float CrouchedCapsuleSize;
+		float RaycastForGetupSize;
 
 	// ===== CAMERA =====
 
@@ -132,6 +133,7 @@ class BASE_API AFPCharacter : public ANinjaCharacter
 		bool bIsLeaningRight = false;
 		bool bIsLeaningLeft = false;
 		bool bIsSprinting = false;
+		bool bCanGetUp = false;
 		
 		UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 		UPlayerAbilityComponent* CurrentAbility;
@@ -213,6 +215,7 @@ public:
 		void DisableVignetteWhenCrouched();
 	void SetCurrentAbility(UPlayerAbilityComponent* newAbility);
 	void ToggleRunningState();
+	void CheckCrouchingObstacle();
 
 protected:
 	
