@@ -62,8 +62,6 @@ AFPCharacter::AFPCharacter(const FObjectInitializer& ObjectInitializer) : Super(
 	//Getting default capsule size value
 	DefaultCapsuleSize = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 	CrouchedCapsuleSize = DefaultCapsuleSize / 2;
-	RaycastForGetupSize = DefaultCapsuleSize - CrouchedCapsuleSize;
-
 }
 
 // Called when the game starts or when spawned
@@ -242,18 +240,15 @@ void AFPCharacter::CrouchDown()
 			if (IsCrouched)
 			{		
 				// Checking obstacles
-				CheckCrouchingObstacle();
-				if (bCanGetUp)
+				if (CheckCrouchingObstacle())
 				{
 					GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
 					T_GetUp.PlayFromStart();
 					IsCrouched = false;
 					DisableVignetteWhenCrouched();
-					bCanGetUp = false;
 				}
 			}
 			else {
-
 				GetCharacterMovement()->MaxWalkSpeed = CrouchedWalkSpeed;
 				T_Crouch.PlayFromStart();
 				IsCrouched = true;
@@ -430,19 +425,20 @@ void AFPCharacter::HeadBobbing() {
 }
 
 // Called by timeline when crouching
-void AFPCharacter::CheckCrouchingObstacle()
+bool AFPCharacter::CheckCrouchingObstacle()
 {
 	// Setting the starting & ending positions of raycast. Raycast is above the head
 	FVector ActorLocation = this->GetActorLocation();
-	FVector StartingLocation = FVector(ActorLocation.X, ActorLocation.Y, ActorLocation.Z + CrouchedCapsuleSize);
-	FVector EndingLocation = StartingLocation + FVector::UpVector * RaycastForGetupSize;
-	FVector Direction = UKismetMathLibrary::GetDirectionUnitVector(StartingLocation, EndingLocation);
+	FVector StartingLocation = FVector(ActorLocation.X, ActorLocation.Y, ActorLocation.Z) + CrouchedCapsuleSize * this->GetActorUpVector();
+	FVector EndingLocation = StartingLocation + this->GetActorUpVector() * CrouchedCapsuleSize;
 
 	// Configure the sphere
-	FCollisionShape MySphere = FCollisionShape::MakeSphere(30.0f); // 5M Radius
+	FCollisionShape MySphere = FCollisionShape::MakeSphere(20.0f); // 5M Radius
 	FHitResult Hit(ForceInit);
 	TArray<FHitResult> OutResults;
 
 	// Creating a raycast, above the head of the player. We use the height of the capsule.
-	bCanGetUp = !GetWorld()->SweepMultiByChannel(OutResults, StartingLocation, EndingLocation, FQuat::Identity, ECollisionChannel::ECC_Visibility, MySphere);
+	bool res = !GetWorld()->SweepMultiByChannel(OutResults, StartingLocation, EndingLocation, FQuat::Identity, ECollisionChannel::ECC_Visibility, MySphere);
+
+	return res;
 }
