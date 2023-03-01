@@ -433,7 +433,7 @@ bool AFPCharacter::CheckCrouchingObstacle()
 	FVector EndingLocation = StartingLocation + this->GetActorUpVector() * CrouchedCapsuleSize;
 
 	// Configure the sphere
-	FCollisionShape MySphere = FCollisionShape::MakeSphere(30.0f); // 5M Radius
+	FCollisionShape MySphere = FCollisionShape::MakeSphere(20.0f); // 5M Radius
 	FHitResult Hit(ForceInit);
 	TArray<FHitResult> OutResults;
 
