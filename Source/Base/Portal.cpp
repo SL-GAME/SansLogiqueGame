@@ -68,7 +68,7 @@ void APortal::InitSceneCapture()
     SceneCapture->LODDistanceFactor = 3; //Force bigger LODs for faster computations
     SceneCapture->bEnableClipPlane = true;
     SceneCapture->bUseCustomProjectionMatrix = true;
-    SceneCapture->CaptureSource = ESceneCaptureSource::SCS_SceneColorHDRNoAlpha;
+    SceneCapture->CaptureSource = ESceneCaptureSource::SCS_FinalColorHDR; // ESceneCaptureSource::SCS_SceneColorHDRNoAlpha;
 
     //Setup Post-Process of SceneCapture (optimization : disable Motion Blur, etc)
     FPostProcessSettings CaptureSettings;
