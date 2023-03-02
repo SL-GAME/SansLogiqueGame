@@ -199,14 +199,16 @@ void APortal::UpdatePortal() {
 
             PC->GetViewportSize(CurrentSizeX, CurrentSizeY);
             PortalTexture->ResizeTarget(CurrentSizeX * PortalQuality, CurrentSizeY * PortalQuality);
-            AFPCharacter* Player = PC->myPlayer;
-            UCameraComponent* PlayerCamera = Player->GetFirstPersonCameraComponent();
-            FTransform newSceneCaptureTransform = PlayerCamera->GetComponentTransform().GetRelativeTransform(BackFacingScene->GetComponentTransform());
-            LinkedPortal->SceneCapture->SetRelativeTransform(newSceneCaptureTransform);
-            LinkedPortal->SceneCapture->ClipPlaneNormal = LinkedPortal->GetActorForwardVector();
-            LinkedPortal->SceneCapture->ClipPlaneBase = LinkedPortal->GetActorLocation() + LinkedPortal->SceneCapture->ClipPlaneNormal * -1.0f;
-            LinkedPortal->SceneCapture->CustomProjectionMatrix = ControllerOwner->GetCameraProjectionMatrix();
-            //LinkedPortal->SceneCapture->CaptureScene();
+            //AFPCharacter* Player = PC->myPlayer;
+            UCameraComponent* PlayerCamera = PC->GetCurrentCamera(); // Player->GetFirstPersonCameraComponent();
+            if (PlayerCamera) {
+                FTransform newSceneCaptureTransform = PlayerCamera->GetComponentTransform().GetRelativeTransform(BackFacingScene->GetComponentTransform());
+                LinkedPortal->SceneCapture->SetRelativeTransform(newSceneCaptureTransform);
+                LinkedPortal->SceneCapture->ClipPlaneNormal = LinkedPortal->GetActorForwardVector();
+                LinkedPortal->SceneCapture->ClipPlaneBase = LinkedPortal->GetActorLocation() + LinkedPortal->SceneCapture->ClipPlaneNormal * -1.0f;
+                LinkedPortal->SceneCapture->CustomProjectionMatrix = ControllerOwner->GetCameraProjectionMatrix();
+                //LinkedPortal->SceneCapture->CaptureScene();
+            }
 
             if (!ActorsInPortal.IsEmpty()) {
                 for (int i = ActorsInPortal.Num() - 1; i >= 0; i--)
