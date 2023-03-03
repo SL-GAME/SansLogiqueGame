@@ -38,3 +38,13 @@ FMatrix AMyPlayerController::GetCameraProjectionMatrix()
 
 	return ProjectionMatrix;
 }
+
+UCameraComponent* AMyPlayerController::GetCurrentCamera() {
+
+	AFPCharacter* CurrentPlayer = Cast<AFPCharacter>(GetPawn());
+	if (CurrentPlayer) {
+		return CurrentPlayer->GetFirstPersonCameraComponent();
+	}
+	else
+		return nullptr;
+}
