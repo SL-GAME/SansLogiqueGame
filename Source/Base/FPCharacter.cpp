@@ -62,7 +62,6 @@ AFPCharacter::AFPCharacter(const FObjectInitializer& ObjectInitializer) : Super(
 	//Getting default capsule size value
 	DefaultCapsuleSize = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 	CrouchedCapsuleSize = DefaultCapsuleSize / 2;
-
 }
 
 // Called when the game starts or when spawned
@@ -238,15 +237,18 @@ void AFPCharacter::CrouchDown()
 		
 		if (!GetCharacterMovement()->IsFalling()) { // If the character isn't currently jumping
 
-			if (IsCrouched) {
-
-				GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
-				T_GetUp.PlayFromStart();
-				IsCrouched = false;
-				DisableVignetteWhenCrouched();
+			if (IsCrouched)
+			{		
+				// Checking obstacles
+				if (CheckCrouchingObstacle())
+				{
+					GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
+					T_GetUp.PlayFromStart();
+					IsCrouched = false;
+					DisableVignetteWhenCrouched();
+				}
 			}
 			else {
-
 				GetCharacterMovement()->MaxWalkSpeed = CrouchedWalkSpeed;
 				T_Crouch.PlayFromStart();
 				IsCrouched = true;
@@ -420,4 +422,23 @@ void AFPCharacter::HeadBobbing() {
 
 	if (BobbingT > 99.0f)
 		BobbingT = 0.0f;
+}
+
+// Called by timeline when crouching
+bool AFPCharacter::CheckCrouchingObstacle()
+{
+	// Setting the starting & ending positions of raycast. Raycast is above the head
+	FVector ActorLocation = this->GetActorLocation();
+	FVector StartingLocation = FVector(ActorLocation.X, ActorLocation.Y, ActorLocation.Z) + CrouchedCapsuleSize * this->GetActorUpVector();
+	FVector EndingLocation = StartingLocation + this->GetActorUpVector() * CrouchedCapsuleSize;
+
+	// Configure the sphere
+	FCollisionShape MySphere = FCollisionShape::MakeSphere(20.0f); // 5M Radius
+	FHitResult Hit(ForceInit);
+	TArray<FHitResult> OutResults;
+
+	// Creating a raycast, above the head of the player. We use the height of the capsule.
+	bool res = !GetWorld()->SweepMultiByChannel(OutResults, StartingLocation, EndingLocation, FQuat::Identity, ECollisionChannel::ECC_Visibility, MySphere);
+
+	return res;
 }
