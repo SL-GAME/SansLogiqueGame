@@ -68,7 +68,7 @@ void APortal::InitSceneCapture()
     SceneCapture->LODDistanceFactor = 3; //Force bigger LODs for faster computations
     SceneCapture->bEnableClipPlane = true;
     SceneCapture->bUseCustomProjectionMatrix = true;
-    SceneCapture->CaptureSource = ESceneCaptureSource::SCS_SceneColorHDRNoAlpha;
+    SceneCapture->CaptureSource = ESceneCaptureSource::SCS_FinalColorHDR; // ESceneCaptureSource::SCS_SceneColorHDRNoAlpha;
 
     //Setup Post-Process of SceneCapture (optimization : disable Motion Blur, etc)
     FPostProcessSettings CaptureSettings;
@@ -144,10 +144,10 @@ void APortal::TeleportPlayer(AFPCharacter* Player)
     newT = newT * LinkedPortal->GetActorTransform();
 
     //FVector newLocation = (newT.GetLocation() - Player->GetFirstPersonCameraComponent()->GetRelativeLocation()) + (LinkedPortal->GetActorForwardVector() * 10.0f);
-    FVector newLocation = (newT.GetLocation() - Player->GetSpringArmComponent()->GetRelativeLocation()) + (LinkedPortal->GetActorForwardVector() * 10.0f);
+    FVector newLocation = (newT.GetLocation() - Player->GetSpringArmComponent()->GetRelativeLocation()) + (LinkedPortal->GetActorForwardVector() * 15.0f);
 
     //FVector newLocation = (newT.GetLocation()) + (LinkedPortal->GetActorForwardVector() * 10.0f);
-    Player->SetActorLocation(newLocation);
+    Player->SetActorLocation(newLocation, false, nullptr, ETeleportType::TeleportPhysics);
 
     FRotator NewRotator = FRotator::ZeroRotator;
     NewRotator.Pitch = newT.Rotator().Pitch;
@@ -199,14 +199,16 @@ void APortal::UpdatePortal() {
 
             PC->GetViewportSize(CurrentSizeX, CurrentSizeY);
             PortalTexture->ResizeTarget(CurrentSizeX * PortalQuality, CurrentSizeY * PortalQuality);
-            AFPCharacter* Player = PC->myPlayer;
-            UCameraComponent* PlayerCamera = Player->GetFirstPersonCameraComponent();
-            FTransform newSceneCaptureTransform = PlayerCamera->GetComponentTransform().GetRelativeTransform(BackFacingScene->GetComponentTransform());
-            LinkedPortal->SceneCapture->SetRelativeTransform(newSceneCaptureTransform);
-            LinkedPortal->SceneCapture->ClipPlaneNormal = LinkedPortal->GetActorForwardVector();
-            LinkedPortal->SceneCapture->ClipPlaneBase = LinkedPortal->GetActorLocation() + LinkedPortal->SceneCapture->ClipPlaneNormal * -1.0f;
-            LinkedPortal->SceneCapture->CustomProjectionMatrix = ControllerOwner->GetCameraProjectionMatrix();
-            //LinkedPortal->SceneCapture->CaptureScene();
+            //AFPCharacter* Player = PC->myPlayer;
+            UCameraComponent* PlayerCamera = PC->GetCurrentCamera(); // Player->GetFirstPersonCameraComponent();
+            if (PlayerCamera) {
+                FTransform newSceneCaptureTransform = PlayerCamera->GetComponentTransform().GetRelativeTransform(BackFacingScene->GetComponentTransform());
+                LinkedPortal->SceneCapture->SetRelativeTransform(newSceneCaptureTransform);
+                LinkedPortal->SceneCapture->ClipPlaneNormal = LinkedPortal->GetActorForwardVector();
+                LinkedPortal->SceneCapture->ClipPlaneBase = LinkedPortal->GetActorLocation() + LinkedPortal->SceneCapture->ClipPlaneNormal * -1.0f;
+                LinkedPortal->SceneCapture->CustomProjectionMatrix = ControllerOwner->GetCameraProjectionMatrix();
+                //LinkedPortal->SceneCapture->CaptureScene();
+            }
 
             if (!ActorsInPortal.IsEmpty()) {
                 for (int i = ActorsInPortal.Num() - 1; i >= 0; i--)

@@ -25,6 +25,10 @@ public:
 
 	FMatrix GetCameraProjectionMatrix();
 
+	UFUNCTION()
+	UCameraComponent* GetCurrentCamera();
+	
+
 protected:
 	virtual void BeginPlay() override;
 };
