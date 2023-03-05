@@ -3,6 +3,9 @@
 #include "PortalManagerComponent.h"
 #include "EngineUtils.h"
 #include "Portal.h"
+#include "Kismet/GameplayStatics.h"
+#include "Camera/CameraComponent.h"
+#include "Tools.h"
 
 // Sets default values for this component's properties
 UPortalManagerComponent::UPortalManagerComponent()
@@ -41,18 +44,23 @@ void UPortalManagerComponent::TickComponent(float DeltaTime, ELevelTick TickType
 
 void UPortalManagerComponent::UpdatePortalsInWorld() {
 
-	FVector PlayerLocation = GetOwner()->GetActorLocation();
+	AMyPlayerController* PC = Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (!PC)
+		return;
+
+	FVector PlayerLocation = PC->GetCurrentCamera()->GetComponentLocation();
+	
 	float Distance = MinDistance;
 	APortal* ActivePortal = nullptr;
 
 	for (TActorIterator<APortal>Portal(GetWorld()); Portal; ++Portal)
 	{
-		if (!Portal->isAlwaysActive) {
+		Portal->SetIsActive(false);
+		if (!Portal->isAlwaysActive && Portal->IsPortalOnViewPort(PC)) {
 			float NewDistance = FMath::Abs(FVector::Dist(PlayerLocation, Portal->GetActorLocation()));
 			if (!OnlyNearest)
 				Portal->SetIsActive(NewDistance < MinDistance);
 			else {
-				Portal->SetIsActive(false);
 				if (NewDistance < Distance) {
 					Distance = NewDistance;
 					ActivePortal = *Portal;
