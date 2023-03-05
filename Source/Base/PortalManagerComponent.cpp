@@ -15,6 +15,7 @@ UPortalManagerComponent::UPortalManagerComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 	SetTickGroup(ETickingGroup::TG_PostPhysics);
 	MinDistance = 5000.0f;
+	CloseDistance = 500.0f;
 	// ...
 }
 
@@ -56,12 +57,19 @@ void UPortalManagerComponent::UpdatePortalsInWorld() {
 	for (TActorIterator<APortal>Portal(GetWorld()); Portal; ++Portal)
 	{
 		Portal->SetIsActive(false);
-		if (!Portal->isAlwaysActive && Portal->IsPortalOnViewPort(PC)) {
+		if (!Portal->isAlwaysActive) {
 			float NewDistance = FMath::Abs(FVector::Dist(PlayerLocation, Portal->GetActorLocation()));
 			if (!OnlyNearest)
 				Portal->SetIsActive(NewDistance < MinDistance);
-			else {
-				if (NewDistance < Distance) {
+			else if(NewDistance <= MinDistance){
+				if (NewDistance <= CloseDistance) {
+					FVector PlayerToPortalDir = Portal->GetActorLocation() - PlayerLocation;
+					if (PlayerToPortalDir.Dot(PC->GetCurrentCamera()->GetForwardVector()) > 0.0f) {
+						Distance = NewDistance;
+						ActivePortal = *Portal;
+					}
+				}
+				else if (NewDistance < Distance && Portal->IsPortalOnViewPort(PC)) {
 					Distance = NewDistance;
 					ActivePortal = *Portal;
 				}
