@@ -209,12 +209,11 @@ void APortal::UpdatePortal() {
                 LinkedPortal->SceneCapture->CustomProjectionMatrix = ControllerOwner->GetCameraProjectionMatrix();
                 //LinkedPortal->SceneCapture->CaptureScene();
             }
-
-            if (!ActorsInPortal.IsEmpty()) {
-                for (int i = ActorsInPortal.Num() - 1; i >= 0; i--)
-                    CheckIfPlayerShouldTeleport(ActorsInPortal[i]);
-            }
         }
+    }
+    if (!ActorsInPortal.IsEmpty()) {
+        for (int i = ActorsInPortal.Num() - 1; i >= 0; i--)
+            CheckIfPlayerShouldTeleport(ActorsInPortal[i]);
     }
 }
 
@@ -232,6 +231,26 @@ void APortal::SetIsActive(bool newIsActive) {
         SetRTT(LinkedPortal->PortalTexture);
     else
        ClearRTT();
+}
+
+bool APortal::IsPortalOnViewPort(AMyPlayerController* PC)
+{
+    int MaxX, MaxY;
+    PC->GetViewportSize(MaxX, MaxY);
+
+    if (PortalCorners.IsEmpty())
+        return false;
+
+    for (auto Corner : PortalCorners) {
+        if (Corner) {
+            FVector2D SL = FVector2D::ZeroVector;
+            PC->ProjectWorldLocationToScreen(Corner->GetComponentLocation(), SL, false);
+            if (SL.X > 0 && SL.X < MaxX && SL.Y > 0 && SL.Y < MaxY)
+                return true;
+        }
+    }
+
+    return false;
 }
 
 void APortal::ClearRTT_Implementation()

@@ -19,6 +19,9 @@ public :
 	float MinDistance;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float CloseDistance;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool OnlyNearest;
 
 protected :
