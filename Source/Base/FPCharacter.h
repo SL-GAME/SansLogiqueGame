@@ -213,6 +213,7 @@ public:
 		void DisableVignetteWhenCrouched();
 	void SetCurrentAbility(UPlayerAbilityComponent* newAbility);
 	void ToggleRunningState();
+	bool CheckCrouchingObstacle();
 
 protected:
 	

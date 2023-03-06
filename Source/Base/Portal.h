@@ -22,6 +22,10 @@ private :
 		bool isActive;
 
 public:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		TArray<USceneComponent*> PortalCorners;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		USceneComponent* BackFacingScene;
 
@@ -64,6 +68,9 @@ public:
 	bool GetIsActive();
 
 	void SetIsActive(bool newIsActive);
+
+	UFUNCTION()
+	bool IsPortalOnViewPort(AMyPlayerController* PC);
 
 protected:
 	// Called when the game starts or when spawned

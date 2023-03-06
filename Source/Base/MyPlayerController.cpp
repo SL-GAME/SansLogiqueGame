@@ -4,6 +4,7 @@
 #include "MyPlayerController.h"
 #include "FPCharacter.h"
 #include "Kismet/GameplayStatics.h"
+#include "ControllablePawn.h"
 
 void AMyPlayerController::BeginPlay()
 {
@@ -37,4 +38,24 @@ FMatrix AMyPlayerController::GetCameraProjectionMatrix()
 	}
 
 	return ProjectionMatrix;
+}
+
+UCameraComponent* AMyPlayerController::GetCurrentCamera() {
+
+	APawn* CurrentPawn = GetPawn();
+
+	if (!CurrentPawn)
+		return nullptr;
+
+	AFPCharacter* CurrentPlayer = Cast<AFPCharacter>(CurrentPawn);
+	if (CurrentPlayer) {
+		return CurrentPlayer->GetFirstPersonCameraComponent();
+	}
+	else {
+		AControllablePawn* CurrentControllable = Cast<AControllablePawn>(CurrentPawn);
+		if (CurrentControllable)
+			return CurrentControllable->GetCameraComponent();
+	}
+	
+	return nullptr;
 }
