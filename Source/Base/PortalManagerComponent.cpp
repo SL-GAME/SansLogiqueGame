@@ -3,6 +3,9 @@
 #include "PortalManagerComponent.h"
 #include "EngineUtils.h"
 #include "Portal.h"
+#include "Kismet/GameplayStatics.h"
+#include "Camera/CameraComponent.h"
+#include "Tools.h"
 
 // Sets default values for this component's properties
 UPortalManagerComponent::UPortalManagerComponent()
@@ -12,6 +15,7 @@ UPortalManagerComponent::UPortalManagerComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 	SetTickGroup(ETickingGroup::TG_PostPhysics);
 	MinDistance = 5000.0f;
+	CloseDistance = 500.0f;
 	// ...
 }
 
@@ -41,19 +45,31 @@ void UPortalManagerComponent::TickComponent(float DeltaTime, ELevelTick TickType
 
 void UPortalManagerComponent::UpdatePortalsInWorld() {
 
-	FVector PlayerLocation = GetOwner()->GetActorLocation();
+	AMyPlayerController* PC = Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (!PC)
+		return;
+
+	FVector PlayerLocation = PC->GetCurrentCamera()->GetComponentLocation();
+	
 	float Distance = MinDistance;
 	APortal* ActivePortal = nullptr;
 
 	for (TActorIterator<APortal>Portal(GetWorld()); Portal; ++Portal)
 	{
+		Portal->SetIsActive(false);
 		if (!Portal->isAlwaysActive) {
 			float NewDistance = FMath::Abs(FVector::Dist(PlayerLocation, Portal->GetActorLocation()));
 			if (!OnlyNearest)
 				Portal->SetIsActive(NewDistance < MinDistance);
-			else {
-				Portal->SetIsActive(false);
-				if (NewDistance < Distance) {
+			else if(NewDistance <= MinDistance){
+				if (NewDistance <= CloseDistance) {
+					FVector PlayerToPortalDir = Portal->GetActorLocation() - PlayerLocation;
+					if (PlayerToPortalDir.Dot(PC->GetCurrentCamera()->GetForwardVector()) > 0.0f) {
+						Distance = NewDistance;
+						ActivePortal = *Portal;
+					}
+				}
+				else if (NewDistance < Distance && Portal->IsPortalOnViewPort(PC)) {
 					Distance = NewDistance;
 					ActivePortal = *Portal;
 				}
