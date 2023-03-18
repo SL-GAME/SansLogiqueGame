@@ -39,6 +39,9 @@ public :
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
 		bool ToggleSprint;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
+		bool ToggleCrouch;
+
 	// Video settings
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Video")
