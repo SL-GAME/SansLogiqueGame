@@ -10,7 +10,7 @@ void USansLogiqueInstance::Init()
 	LoadSettings();
 }
 
-void USansLogiqueInstance::SaveSettings(FVector PlayerLocation, int32 Score)
+void USansLogiqueInstance::SaveSettings()
 {
 	UGameplayStatics::SaveGameToSlot(SettingsData, SettingsSaveSlot, 0);
 }
@@ -18,14 +18,14 @@ void USansLogiqueInstance::SaveSettings(FVector PlayerLocation, int32 Score)
 USettingsSave* USansLogiqueInstance::LoadSettings()
 {
 	// if settings save already loaded return it
-	if(SettingsData != nullptr)
+	if(IsValid(SettingsData))
 		return SettingsData;
 
 	// else load settings save
 	SettingsData = Cast<USettingsSave>(UGameplayStatics::LoadGameFromSlot(SettingsSaveSlot, 0));
 
 	// if not settings save exist
-	if (SettingsData != nullptr)
+	if (IsValid(SettingsData))
 		return SettingsData;
 
 	// create it

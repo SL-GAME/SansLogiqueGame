@@ -18,16 +18,18 @@ class BASE_API USansLogiqueInstance : public UGameInstance
 
 	void Init() override;
 
+	UPROPERTY()
 	FString SettingsSaveSlot = "Settings";
 
+	UPROPERTY()
 	USettingsSave* SettingsData;
 
 public:
 
 	UFUNCTION(BlueprintCallable, Category = "Settings Save")
-	void SaveSettings(FVector PlayerLocation, int32 Score);
+	void SaveSettings();
 
-	UFUNCTION(BlueprintCallable, Category = "Settings Save")
+	UFUNCTION(BlueprintPure, Category = "Settings Save")
 	USettingsSave* LoadSettings();
 
 };
