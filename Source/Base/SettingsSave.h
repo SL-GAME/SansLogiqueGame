@@ -19,42 +19,42 @@ public :
 	// Gameplay settings
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
-		bool InvertX;
+		bool InvertX = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
-		bool InvertY;
+		bool InvertY = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
-		float CamSens;
+		float CamSens = 0.5f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
-		bool BobbingEnable;
+		bool BobbingEnable = true;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
-		float BobbingSens;
+		float BobbingSens = 0.8f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
 		FString TutoMode;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
-		bool ToggleSprint;
+		bool ToggleSprint = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
-		bool ToggleCrouch;
+		bool ToggleCrouch = true;
 
 	// Video settings
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Video")
-		float Brightness;
+		float Brightness = 0.5f;
 	
 	// Audio settings
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
-		float GlobalVolume;
+		float GlobalVolume = 0.75f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
-		float MusicVolume;
+		float MusicVolume = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
-		float SoundVolume;
+		float SoundVolume = 1;
 };
