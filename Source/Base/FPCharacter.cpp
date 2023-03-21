@@ -17,6 +17,9 @@
 #include "Tools.h"
 #include "CustomCharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "SansLogiqueInstance.h"
+#include "SettingsSave.h"
 
 // Sets default values
 AFPCharacter::AFPCharacter(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer.SetDefaultSubobjectClass<UCustomCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -68,6 +71,8 @@ AFPCharacter::AFPCharacter(const FObjectInitializer& ObjectInitializer) : Super(
 void AFPCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Settings = Cast<USansLogiqueInstance>(UGameplayStatics::GetGameInstance(this))->LoadSettings();
 	
 	// Bind timelines
 	FOnTimelineFloat TimelineProgress;
@@ -99,7 +104,7 @@ void AFPCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (bEnableHeadBobbing)
+	if (bEnableHeadBobbing && Settings->BobbingEnable)
 		HeadBobbing();
 
 	// Timelines
@@ -127,7 +132,9 @@ void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	// FPCharacter special movements inputs
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AFPCharacter::Sprint);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AFPCharacter::SprintReleased);
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AFPCharacter::CrouchDown);
+	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &AFPCharacter::CrouchDownReleased);
 	PlayerInputComponent->BindAction("LeanRight", IE_Pressed, this, &AFPCharacter::LeanRightPressed);
 	PlayerInputComponent->BindAction("LeanRight", IE_Released, this, &AFPCharacter::LeanRightReleased);
 	PlayerInputComponent->BindAction("LeanLeft", IE_Pressed, this, &AFPCharacter::LeanLeftPressed);
@@ -145,7 +152,7 @@ void AFPCharacter::LookUpAndDown(float Value)
 {
 	if (bCanMoveCamera) {
 		Value = FMath::Clamp(Value, -CameraMaxVSpeed, CameraMaxVSpeed);
-		AddControllerPitchInput(CameraSensibility * Value);
+		AddControllerPitchInput(Settings->CamSens * CameraSensibility * Value * (Settings->InvertY ? -1.0f : 1.0f));
 	}
 }
 
@@ -153,7 +160,7 @@ void AFPCharacter::LookRightAndLeft(float Value)
 {
 	if (bCanMoveCamera) {
 		Value = FMath::Clamp(Value, -CameraMaxHSpeed, CameraMaxHSpeed);
-		AddControllerYawInput(CameraSensibility * Value);
+		AddControllerYawInput(Settings->CamSens * CameraSensibility * Value * (Settings->InvertX ? -1.0f : 1.0f));
 	}
 }
 
@@ -218,6 +225,11 @@ void AFPCharacter::CameraLean(int iteration) {
 	}
 }
 
+void AFPCharacter::SprintReleased() {
+	if (bIsSprinting && !Settings->ToggleSprint)
+		Sprint();
+}
+
 void AFPCharacter::Sprint()
 {
 	if (!bIsSprinting && !IsCrouched) {
@@ -226,6 +238,11 @@ void AFPCharacter::Sprint()
 	else if(bIsSprinting) {
 		ToggleRunningState();
 	}
+}
+
+void AFPCharacter::CrouchDownReleased() {
+	if (IsCrouched && !Settings->ToggleCrouch)
+		CrouchDown();
 }
 
 void AFPCharacter::CrouchDown()
@@ -418,7 +435,7 @@ void AFPCharacter::HeadBobbing() {
 		newBobbing = FVector(0.0f, FMath::Cos(BobbingT) * yBreathingBobbing, FMath::Sin(BobbingT * 2.0f) * zBreathingBobbing);
 	}
 
-	HeadBobbingComponent->SetRelativeLocation(newBobbing);// HeadBobbingComponent->GetRelativeLocation() + newBobbing);
+	HeadBobbingComponent->SetRelativeLocation(newBobbing * Settings->BobbingSens);// HeadBobbingComponent->GetRelativeLocation() + newBobbing);
 
 	if (BobbingT > 99.0f)
 		BobbingT = 0.0f;
