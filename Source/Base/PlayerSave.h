@@ -25,6 +25,8 @@ class BASE_API UPlayerSave : public USaveGame
 {
 	GENERATED_BODY()
 
+public:
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Abilities")
 	TArray<bool> abilities = TArray<bool>({ true, false, true, true });
 
