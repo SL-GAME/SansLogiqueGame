@@ -7,6 +7,8 @@
 #include "SansLogiqueInstance.generated.h"
 
 class USettingsSave;
+class UPlayerSave;
+class UHallStatusSave;
 
 /**
  * 
@@ -24,6 +26,18 @@ class BASE_API USansLogiqueInstance : public UGameInstance
 	UPROPERTY()
 	USettingsSave* SettingsData;
 
+	UPROPERTY()
+	FString HallStatusSaveSlot = "Hall";
+
+	UPROPERTY()
+	UHallStatusSave* HallData;
+
+	UPROPERTY()
+	FString PlayerSaveSlot = "Player";
+
+	UPROPERTY()
+	UPlayerSave* PlayerData;
+
 public:
 
 	UFUNCTION(BlueprintCallable, Category = "Settings Save")
@@ -32,4 +46,15 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Settings Save")
 	USettingsSave* LoadSettings();
 
+	UFUNCTION(BlueprintCallable, Category = "Hall Status Save")
+	void SaveHallData();
+
+	UFUNCTION(BlueprintPure, Category = "Hall Status Save")
+	UHallStatusSave* LoadHallData();
+
+	UFUNCTION(BlueprintCallable, Category = "Player Save")
+	void SavePlayerData();
+
+	UFUNCTION(BlueprintPure, Category = "Player Save")
+	UPlayerSave* LoadPlayerData();
 };

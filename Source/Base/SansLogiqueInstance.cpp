@@ -3,6 +3,8 @@
 
 #include "SansLogiqueInstance.h"
 #include "SettingsSave.h"
+#include "HallStatusSave.h"
+#include "PlayerSave.h"
 #include "Engine.h"
 
 void USansLogiqueInstance::Init()
@@ -12,7 +14,8 @@ void USansLogiqueInstance::Init()
 
 void USansLogiqueInstance::SaveSettings()
 {
-	UGameplayStatics::SaveGameToSlot(SettingsData, SettingsSaveSlot, 0);
+	if(IsValid(SettingsData))
+		UGameplayStatics::SaveGameToSlot(SettingsData, SettingsSaveSlot, 0);
 }
 
 USettingsSave* USansLogiqueInstance::LoadSettings()
@@ -33,4 +36,56 @@ USettingsSave* USansLogiqueInstance::LoadSettings()
 	UGameplayStatics::SaveGameToSlot(SettingsData, SettingsSaveSlot, 0);
 
 	return SettingsData;
+}
+
+void USansLogiqueInstance::SaveHallData()
+{
+	if (IsValid(HallData))
+		UGameplayStatics::SaveGameToSlot(SettingsData, SettingsSaveSlot, 0);
+}
+
+UHallStatusSave* USansLogiqueInstance::LoadHallData()
+{
+	// if settings save already loaded return it
+	if (IsValid(HallData))
+		return HallData;
+
+	// else load settings save
+	HallData = Cast<UHallStatusSave>(UGameplayStatics::LoadGameFromSlot(HallStatusSaveSlot, 0));
+
+	// if not settings save exist
+	if (IsValid(HallData))
+		return HallData;
+
+	// create it
+	HallData = Cast<UHallStatusSave>(UGameplayStatics::CreateSaveGameObject(UHallStatusSave::StaticClass()));
+	UGameplayStatics::SaveGameToSlot(HallData, HallStatusSaveSlot, 0);
+
+	return HallData;
+}
+
+void USansLogiqueInstance::SavePlayerData()
+{
+	if (IsValid(PlayerData))
+		UGameplayStatics::SaveGameToSlot(PlayerData, PlayerSaveSlot, 0);
+}
+
+UPlayerSave* USansLogiqueInstance::LoadPlayerData()
+{
+	// if settings save already loaded return it
+	if (IsValid(PlayerData))
+		return PlayerData;
+
+	// else load settings save
+	PlayerData = Cast<UPlayerSave>(UGameplayStatics::LoadGameFromSlot(PlayerSaveSlot, 0));
+
+	// if not settings save exist
+	if (IsValid(PlayerData))
+		return PlayerData;
+
+	// create it
+	PlayerData = Cast<UPlayerSave>(UGameplayStatics::CreateSaveGameObject(UPlayerSave::StaticClass()));
+	UGameplayStatics::SaveGameToSlot(PlayerData, PlayerSaveSlot, 0);
+
+	return PlayerData;
 }
