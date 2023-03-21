@@ -89,3 +89,12 @@ UPlayerSave* USansLogiqueInstance::LoadPlayerData()
 
 	return PlayerData;
 }
+
+void USansLogiqueInstance::CreateDefaultDataSave()
+{
+	HallData = Cast<UHallStatusSave>(UGameplayStatics::CreateSaveGameObject(UHallStatusSave::StaticClass()));
+	UGameplayStatics::SaveGameToSlot(HallData, HallStatusSaveSlot, 0);
+
+	PlayerData = Cast<UPlayerSave>(UGameplayStatics::CreateSaveGameObject(UPlayerSave::StaticClass()));
+	UGameplayStatics::SaveGameToSlot(PlayerData, PlayerSaveSlot, 0);
+}

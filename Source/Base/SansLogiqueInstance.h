@@ -57,4 +57,7 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Player Save")
 	UPlayerSave* LoadPlayerData();
+
+	UFUNCTION(BlueprintCallable, Category = "New Save")
+	void CreateDefaultDataSave();
 };
