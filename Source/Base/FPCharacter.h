@@ -18,11 +18,17 @@ class UPhysicsHandleComponent;
 class UPortalManagerComponent;
 class UDummyAbilityComponent;
 class USceneComponent;
+class USansLogiqueIntance;
+class USettingsSave;
 
 UCLASS()
 class BASE_API AFPCharacter : public ANinjaCharacter
 {
 	GENERATED_BODY()
+
+	// ===== SETTINGS SAVE =====
+	UPROPERTY()
+	USettingsSave* Settings;
 
 	// ===== CAPSULE =====
 
@@ -181,8 +187,10 @@ public:
 
 	// Character special movements
 	void Sprint();
+	void SprintReleased();
 	UFUNCTION(BlueprintCallable, Category = "Character")
 	void CrouchDown();
+	void CrouchDownReleased();
 	void LeanRightPressed();
 	void LeanRightReleased();
 	void LeanLeftPressed();
