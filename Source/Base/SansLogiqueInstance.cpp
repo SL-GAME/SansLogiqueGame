@@ -16,6 +16,10 @@ void USansLogiqueInstance::SaveSettings()
 {
 	if(IsValid(SettingsData))
 		UGameplayStatics::SaveGameToSlot(SettingsData, SettingsSaveSlot, 0);
+	else {
+		LoadSettings();
+		UGameplayStatics::SaveGameToSlot(SettingsData, SettingsSaveSlot, 0);
+	}
 }
 
 USettingsSave* USansLogiqueInstance::LoadSettings()
@@ -41,7 +45,14 @@ USettingsSave* USansLogiqueInstance::LoadSettings()
 void USansLogiqueInstance::SaveHallData()
 {
 	if (IsValid(HallData))
-		UGameplayStatics::SaveGameToSlot(SettingsData, SettingsSaveSlot, 0);
+		UGameplayStatics::SaveGameToSlot(HallData, HallStatusSaveSlot, 0);
+	else
+	{
+		LoadHallData();
+		UGameplayStatics::SaveGameToSlot(HallData, HallStatusSaveSlot, 0);
+	}
+		
+
 }
 
 UHallStatusSave* USansLogiqueInstance::LoadHallData()
@@ -68,6 +79,10 @@ void USansLogiqueInstance::SavePlayerData()
 {
 	if (IsValid(PlayerData))
 		UGameplayStatics::SaveGameToSlot(PlayerData, PlayerSaveSlot, 0);
+	else {
+		LoadPlayerData();
+		UGameplayStatics::SaveGameToSlot(PlayerData, PlayerSaveSlot, 0);
+	}
 }
 
 UPlayerSave* USansLogiqueInstance::LoadPlayerData()
