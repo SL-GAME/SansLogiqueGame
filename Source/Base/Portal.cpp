@@ -152,6 +152,7 @@ void APortal::TeleportPlayer(AFPCharacter* Player)
     FRotator NewRotator = FRotator::ZeroRotator;
     NewRotator.Pitch = newT.Rotator().Pitch;
     NewRotator.Yaw = newT.Rotator().Yaw;
+    NewRotator.Roll = newT.Rotator().Roll;
     Player->GetController()->SetControlRotation(NewRotator);
 
     FTransform newVT = FTransform::Identity;
