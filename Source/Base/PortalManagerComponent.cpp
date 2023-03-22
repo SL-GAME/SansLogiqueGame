@@ -52,7 +52,9 @@ void UPortalManagerComponent::UpdatePortalsInWorld() {
 	FVector PlayerLocation = PC->GetCurrentCamera()->GetComponentLocation();
 	
 	float Distance = MinDistance;
+	float d0 = -1.0f;
 	APortal* ActivePortal = nullptr;
+	FVector CameraForward = PC->GetCurrentCamera()->GetForwardVector();
 
 	for (TActorIterator<APortal>Portal(GetWorld()); Portal; ++Portal)
 	{
@@ -61,15 +63,9 @@ void UPortalManagerComponent::UpdatePortalsInWorld() {
 			float NewDistance = FMath::Abs(FVector::Dist(PlayerLocation, Portal->GetActorLocation()));
 			if (!OnlyNearest)
 				Portal->SetIsActive(NewDistance < MinDistance);
-			else if(NewDistance <= MinDistance){
-				if (NewDistance <= CloseDistance) {
-					FVector PlayerToPortalDir = Portal->GetActorLocation() - PlayerLocation;
-					if (PlayerToPortalDir.Dot(PC->GetCurrentCamera()->GetForwardVector()) > 0.0f) {
-						Distance = NewDistance;
-						ActivePortal = *Portal;
-					}
-				}
-				else if (NewDistance < Distance && Portal->IsPortalOnViewPort(PC)) {
+			else {
+				float d = (Portal->GetActorForwardVector() * -1.0f).Dot(CameraForward);
+				if (d > -0.7f && NewDistance < Distance) {
 					Distance = NewDistance;
 					ActivePortal = *Portal;
 				}
@@ -77,24 +73,8 @@ void UPortalManagerComponent::UpdatePortalsInWorld() {
 		}
 	}
 
-	//for (auto Portal : PortalsInScene) {
-	//	if (!Portal->isAlwaysActive) {
-	//		float NewDistance = FMath::Abs(FVector::Dist(PlayerLocation, Portal->GetActorLocation()));
-	//		if(!OnlyNearest)
-	//			Portal->SetIsActive(NewDistance < MinDistance);
-	//		else {
-	//			Portal->SetIsActive(false);
-	//			if (NewDistance < Distance) {
-	//				Distance = NewDistance;
-	//				ActivePortal = Portal;
-	//			}
-	//		}
-	//	}
-	//}
-
 	if (OnlyNearest && ActivePortal != nullptr)
 		ActivePortal->SetIsActive(true);
-
 }
 
 
