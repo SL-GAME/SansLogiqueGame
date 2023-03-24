@@ -12,6 +12,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include <Kismet/KismetMathLibrary.h>
 
 // Sets default values
 APortal::APortal()
@@ -144,7 +145,7 @@ void APortal::TeleportPlayer(AFPCharacter* Player)
     newT = newT * LinkedPortal->GetActorTransform();
 
     //FVector newLocation = (newT.GetLocation() - Player->GetFirstPersonCameraComponent()->GetRelativeLocation()) + (LinkedPortal->GetActorForwardVector() * 10.0f);
-    FVector newLocation = (newT.GetLocation() - Player->GetSpringArmComponent()->GetRelativeLocation()) + (LinkedPortal->GetActorForwardVector() * 15.0f);
+    FVector newLocation = (newT.GetLocation() - Player->GetSpringArmComponent()->GetRelativeLocation().Z * Player->GetActorUpVector()) + (LinkedPortal->GetActorForwardVector() * 15.0f);
 
     //FVector newLocation = (newT.GetLocation()) + (LinkedPortal->GetActorForwardVector() * 10.0f);
     Player->SetActorLocation(newLocation, false, nullptr, ETeleportType::TeleportPhysics);
@@ -152,6 +153,7 @@ void APortal::TeleportPlayer(AFPCharacter* Player)
     FRotator NewRotator = FRotator::ZeroRotator;
     NewRotator.Pitch = newT.Rotator().Pitch;
     NewRotator.Yaw = newT.Rotator().Yaw;
+    NewRotator.Roll = newT.Rotator().Roll;
     Player->GetController()->SetControlRotation(NewRotator);
 
     FTransform newVT = FTransform::Identity;
@@ -251,6 +253,17 @@ bool APortal::IsPortalOnViewPort(AMyPlayerController* PC)
     }
 
     return false;
+}
+
+bool APortal::IsPlayerLookingAtPortal(AMyPlayerController* PC) {
+
+    FRotator cameraRot = PC->GetCurrentCamera()->GetComponentRotation();
+    FRotator lookAtRot = UKismetMathLibrary::FindLookAtRotation(PC->GetCurrentCamera()->GetComponentLocation(), this->GetActorLocation());
+    float delta = 130.0f;
+
+    return UKismetMathLibrary::InRange_FloatFloat(cameraRot.Yaw, lookAtRot.Yaw - delta, lookAtRot.Yaw + delta);
+        //|| UKismetMathLibrary::InRange_FloatFloat(cameraRot.Pitch, lookAtRot.Pitch - delta, lookAtRot.Pitch + delta)
+        //|| UKismetMathLibrary::InRange_FloatFloat(cameraRot.Roll, lookAtRot.Roll - delta, lookAtRot.Roll + delta);
 }
 
 void APortal::ClearRTT_Implementation()
