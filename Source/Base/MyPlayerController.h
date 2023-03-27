@@ -25,7 +25,7 @@ public:
 
 	FMatrix GetCameraProjectionMatrix();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	UCameraComponent* GetCurrentCamera();
 	
 
