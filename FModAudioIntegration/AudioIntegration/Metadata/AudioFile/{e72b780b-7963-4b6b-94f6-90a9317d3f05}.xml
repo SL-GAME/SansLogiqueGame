@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="AudioFile" id="{da0a58b4-5e1b-43ce-83ba-4441787caeb5}">
+	<object class="AudioFile" id="{e72b780b-7963-4b6b-94f6-90a9317d3f05}">
 		<property name="assetPath">
-			<value>SD GROTTE/TEMP_PressurePlateUp.mp3</value>
+			<value>SD GROTTE/TEMP_ControllableRock.mp3</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>44.0999985</value>
@@ -11,7 +11,7 @@
 			<value>2</value>
 		</property>
 		<property name="length">
-			<value>1.8546938775510204</value>
+			<value>1.9591836734693877</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{8fa38bf8-edee-4f9e-a431-802f1c44ab48}</destination>

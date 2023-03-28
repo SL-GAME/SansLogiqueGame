@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="AudioFile" id="{c8b9f2c4-7647-4f73-bfa5-7db4127ca44d}">
+	<object class="AudioFile" id="{fa2f3803-8ebc-4604-8264-55328f36fc1a}">
 		<property name="assetPath">
-			<value>SD GROTTE/TEMP_PressurePlateDown.mp3</value>
+			<value>SD GROTTE/TEMP_PressurePlateDown3.mp3</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>44.0999985</value>
