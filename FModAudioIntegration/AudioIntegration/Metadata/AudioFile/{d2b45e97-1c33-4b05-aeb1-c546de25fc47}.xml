@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{d2b45e97-1c33-4b05-aeb1-c546de25fc47}">
+		<property name="assetPath">
+			<value>SD FORET/00_TEMP/TEMP_AlambicCompletionSound.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>24</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.3200000000000001</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{8fa38bf8-edee-4f9e-a431-802f1c44ab48}</destination>
+		</relationship>
+	</object>
+</objects>
