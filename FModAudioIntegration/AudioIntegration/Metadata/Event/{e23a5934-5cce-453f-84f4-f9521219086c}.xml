@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{e23a5934-5cce-453f-84f4-f9521219086c}">
 		<property name="name">
-			<value>PressurePlateUp</value>
+			<value>PillarDown</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
@@ -71,7 +71,7 @@
 			<destination>{3c0b75fe-43f4-4702-ab92-d8dc7619a1d6}</destination>
 		</relationship>
 		<relationship name="markers">
-			<destination>{b97575cc-5f04-4007-96b5-7287fea5dd30}</destination>
+			<destination>{6019d678-96ab-4ba8-9a68-7be152f3b372}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{dea93c0d-5692-4648-a9da-731d12048d1c}">
@@ -119,7 +119,7 @@
 			<destination>{dea93c0d-5692-4648-a9da-731d12048d1c}</destination>
 		</relationship>
 	</object>
-	<object class="LoopRegion" id="{b97575cc-5f04-4007-96b5-7287fea5dd30}">
+	<object class="LoopRegion" id="{6019d678-96ab-4ba8-9a68-7be152f3b372}">
 		<property name="position">
 			<value>0</value>
 		</property>
