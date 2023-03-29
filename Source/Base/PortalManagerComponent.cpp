@@ -65,7 +65,7 @@ void UPortalManagerComponent::UpdatePortalsInWorld() {
 				Portal->SetIsActive(NewDistance < MinDistance);
 			else {
 				float d = (Portal->GetActorForwardVector() * -1.0f).Dot(CameraForward);
-				if (d > -0.7f && NewDistance < Distance) {
+				if (d > -0.1f && NewDistance < Distance) {
 					Distance = NewDistance;
 					ActivePortal = *Portal;
 				}
