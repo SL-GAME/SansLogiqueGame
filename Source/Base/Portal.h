@@ -11,6 +11,7 @@
 class USceneCaptureComponent2D;
 class UTextureRenderTarget2D;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEventPlayerGetTeleported);
 
 UCLASS()
 class BASE_API APortal : public AActor
@@ -73,6 +74,9 @@ public:
 	bool IsPortalOnViewPort(AMyPlayerController* PC);
 
 	bool IsPlayerLookingAtPortal(AMyPlayerController* PC);
+
+	UPROPERTY(BlueprintAssignable, Category = "Portal")
+	FEventPlayerGetTeleported OnPlayerCrossPortal;
 
 protected:
 	// Called when the game starts or when spawned
