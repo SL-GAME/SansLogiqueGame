@@ -28,7 +28,7 @@ class BASE_API UPlayerSave : public USaveGame
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Abilities")
-	TArray<bool> abilities = TArray<bool>({ true, false, true, true });
+	TArray<bool> abilities = TArray<bool>({ false, false, true, false });
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Respawn")
 	EWorldCheckpoint lastCheckPoint = EWorldCheckpoint::VE_CP00_Bedroom;
