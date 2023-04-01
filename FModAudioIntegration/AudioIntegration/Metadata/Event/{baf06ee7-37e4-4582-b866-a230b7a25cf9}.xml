@@ -58,7 +58,7 @@
 			<destination>{9e53b248-092d-4594-8afa-2c29b5294a5d}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{e24d72ec-2f08-4c5c-9607-891c9555eddc}</destination>
+			<destination>{c62002eb-89b8-460e-8ffa-2b12942a8ac3}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{b7bd0d7b-3020-40f5-b2e2-767534486d46}" />
@@ -128,7 +128,6 @@
 		<property name="start">
 			<value>3</value>
 		</property>
-		<property name="name" />
 		<property name="volume">
 			<value>-10</value>
 		</property>
@@ -169,7 +168,6 @@
 		<property name="start">
 			<value>1</value>
 		</property>
-		<property name="name" />
 		<property name="pitch">
 			<value>10</value>
 		</property>
