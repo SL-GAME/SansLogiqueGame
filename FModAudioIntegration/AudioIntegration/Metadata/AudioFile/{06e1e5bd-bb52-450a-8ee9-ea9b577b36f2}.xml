@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{06e1e5bd-bb52-450a-8ee9-ea9b577b36f2}">
+		<property name="assetPath">
+			<value>SD CHAMBRE/00_TEMP/TEMP_TirelireBreak.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>24</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>2.2559999999999998</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{8fa38bf8-edee-4f9e-a431-802f1c44ab48}</destination>
+		</relationship>
+	</object>
+</objects>

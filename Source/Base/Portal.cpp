@@ -127,7 +127,7 @@ void APortal::CheckIfPlayerShouldTeleport(AFPCharacter* Player)
     b.Normalize();
     bool check2 = FVector::DotProduct(b, this->GetActorForwardVector()) < 0.0f;
     
-    if (check1 )//&& check2)
+    if (check1 && check2)
         TeleportPlayer(Player);
 }
 
