@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{7a1883f9-00ab-4f2d-924d-3830ca022b5f}">
+		<property name="name">
+			<value>FootstepsChamber</value>
+		</property>
+		<relationship name="folder">
+			<destination>{6928cecd-9e05-4f3c-9ced-0ce129f44395}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{08139304-2fe6-4023-b5c1-e507ade4ae63}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{08139304-2fe6-4023-b5c1-e507ade4ae63}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>4</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>Walking</value>
+			<value>Running</value>
+			<value>Landing</value>
+			<value>CrouchWalk</value>
+		</property>
+		<property name="isHeld">
+			<value>true</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
