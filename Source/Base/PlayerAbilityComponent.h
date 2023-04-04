@@ -30,13 +30,19 @@ public:
 	FVector MeshScale;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
-	float DelayBeforeHiding;
+	float DelayBeforeHiding = 5.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
-	float ShowTransition;
+	float ShowTransition = 4.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
-	float HideTransition;
+	float HideTransition = 1.5f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
+	float T = 0.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
+	bool BreakHide = false;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Player")
 	AFPCharacter* Character;
