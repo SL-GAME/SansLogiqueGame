@@ -42,6 +42,9 @@ public:
 	float T = 0.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
+	bool InUse = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 	bool BreakHide = false;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Player")
