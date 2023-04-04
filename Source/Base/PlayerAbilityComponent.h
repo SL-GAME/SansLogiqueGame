@@ -21,10 +21,22 @@ public:
 	FVector MeshPosition;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
+	FVector HiddenMeshPosition;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 	FVector MeshRotation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 	FVector MeshScale;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
+	float DelayBeforeHiding;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
+	float ShowTransition;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
+	float HideTransition;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Player")
 	AFPCharacter* Character;
@@ -60,6 +72,12 @@ protected:
 
 	UFUNCTION(BlueprintNativeEvent, Category = "PlayerAbility")
 	void RightActionReleasedEvent();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "PlayerAbility")
+	void ShowAbilityEvent();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "PlayerAbility")
+	void HideAbilityEvent();
 
 public:	
 
