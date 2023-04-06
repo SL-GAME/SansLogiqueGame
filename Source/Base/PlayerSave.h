@@ -32,4 +32,13 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Respawn")
 	EWorldCheckpoint lastCheckPoint = EWorldCheckpoint::VE_CP00_Bedroom;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Range")
+	float detectionRange = 180.0f;
+
+	UFUNCTION(BlueprintPure)
+		float GetRoomRange() { return 180.0f; }
+
+	UFUNCTION(BlueprintPure)
+		float GetOutsideRange() { return 300.0f; }
 };
