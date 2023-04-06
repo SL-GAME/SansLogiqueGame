@@ -71,6 +71,8 @@ void  UPlayerAbilityComponent::LeftActionPressedEvent_Implementation() {};
 void  UPlayerAbilityComponent::RightActionPressedEvent_Implementation() {};
 void  UPlayerAbilityComponent::LeftActionReleasedEvent_Implementation() {};
 void  UPlayerAbilityComponent::RightActionReleasedEvent_Implementation() {};
+void UPlayerAbilityComponent::ShowAbilityEvent_Implementation() {};
+void UPlayerAbilityComponent::HideAbilityEvent_Implementation() {};
 
 // Called every frame
 void UPlayerAbilityComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
