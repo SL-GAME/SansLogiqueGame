@@ -138,6 +138,8 @@ class BASE_API AFPCharacter : public ANinjaCharacter
 		bool bIsLeaningRight = false;
 		bool bIsLeaningLeft = false;
 
+protected:
+
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
 		bool bIsSprinting = false;
 		
