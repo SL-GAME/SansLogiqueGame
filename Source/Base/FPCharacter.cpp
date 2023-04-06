@@ -128,17 +128,17 @@ void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	// FPCharacter movements inputs
 	PlayerInputComponent->BindAxis("Forward/Backward", this, &AFPCharacter::MoveForwardBackward);
 	PlayerInputComponent->BindAxis("Right/Left", this, &AFPCharacter::MoveRightLeft);
-	PlayerInputComponent->BindAxis("Lean", this, &AFPCharacter::LeanMovement);
+	//PlayerInputComponent->BindAxis("Lean", this, &AFPCharacter::LeanMovement);
 
 	// FPCharacter special movements inputs
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AFPCharacter::Sprint);
 	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AFPCharacter::SprintReleased);
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AFPCharacter::CrouchDown);
 	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &AFPCharacter::CrouchDownReleased);
-	PlayerInputComponent->BindAction("LeanRight", IE_Pressed, this, &AFPCharacter::LeanRightPressed);
-	PlayerInputComponent->BindAction("LeanRight", IE_Released, this, &AFPCharacter::LeanRightReleased);
-	PlayerInputComponent->BindAction("LeanLeft", IE_Pressed, this, &AFPCharacter::LeanLeftPressed);
-	PlayerInputComponent->BindAction("LeanLeft", IE_Released, this, &AFPCharacter::LeanLeftReleased);
+	//PlayerInputComponent->BindAction("LeanRight", IE_Pressed, this, &AFPCharacter::LeanRightPressed);
+	//PlayerInputComponent->BindAction("LeanRight", IE_Released, this, &AFPCharacter::LeanRightReleased);
+	//PlayerInputComponent->BindAction("LeanLeft", IE_Pressed, this, &AFPCharacter::LeanLeftPressed);
+	//PlayerInputComponent->BindAction("LeanLeft", IE_Released, this, &AFPCharacter::LeanLeftReleased);
 
 	// FPCharacter actions inputs
 	PlayerInputComponent->BindAction("LeftAction", IE_Pressed, this, &AFPCharacter::LeftActionPressed);

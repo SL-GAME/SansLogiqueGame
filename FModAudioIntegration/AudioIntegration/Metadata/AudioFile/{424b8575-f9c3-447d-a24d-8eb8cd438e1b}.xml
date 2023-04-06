@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{424b8575-f9c3-447d-a24d-8eb8cd438e1b}">
+		<property name="assetPath">
+			<value>SD CHAMBRE/00_TEMP/TEMP_validation_led.ogg</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.16455782312925171</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{8fa38bf8-edee-4f9e-a431-802f1c44ab48}</destination>
+		</relationship>
+	</object>
+</objects>

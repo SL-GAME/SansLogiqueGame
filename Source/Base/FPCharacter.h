@@ -137,6 +137,10 @@ class BASE_API AFPCharacter : public ANinjaCharacter
 		bool IsCrouched = false;
 		bool bIsLeaningRight = false;
 		bool bIsLeaningLeft = false;
+
+protected:
+
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
 		bool bIsSprinting = false;
 		
 		UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
