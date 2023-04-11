@@ -23,6 +23,18 @@ public:
 
 	AFPCharacter* myPlayer;
 
+	UPROPERTY()
+	UCameraComponent* TempCamera;
+
+	UPROPERTY()
+	bool isTemp;
+
+	UFUNCTION(BlueprintCallable)
+	void AddTempCamera(UCameraComponent* _TempCamera);
+
+	UFUNCTION(BlueprintCallable)
+	void RemoveTempCamera();
+
 	FMatrix GetCameraProjectionMatrix();
 
 	UFUNCTION(BlueprintCallable)

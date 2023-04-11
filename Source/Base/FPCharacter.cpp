@@ -64,7 +64,7 @@ AFPCharacter::AFPCharacter(const FObjectInitializer& ObjectInitializer) : Super(
 
 	//Getting default capsule size value
 	DefaultCapsuleSize = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
-	CrouchedCapsuleSize = DefaultCapsuleSize / 2;
+	CrouchedCapsuleSize = DefaultCapsuleSize / 3;
 }
 
 // Called when the game starts or when spawned
@@ -232,8 +232,15 @@ void AFPCharacter::SprintReleased() {
 
 void AFPCharacter::Sprint()
 {
-	if (!bIsSprinting && !IsCrouched) {
-		ToggleRunningState();
+	if (!bIsSprinting) {
+		if(!IsCrouched)
+			ToggleRunningState();
+		else
+		{
+			CrouchDown();
+			if (!IsCrouched)
+				ToggleRunningState();
+		}
 	}
 	else if(bIsSprinting) {
 		ToggleRunningState();

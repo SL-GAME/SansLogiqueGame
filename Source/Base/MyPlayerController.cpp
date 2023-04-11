@@ -5,6 +5,7 @@
 #include "FPCharacter.h"
 #include "Kismet/GameplayStatics.h"
 #include "ControllablePawn.h"
+#include "Camera/CameraComponent.h"
 
 void AMyPlayerController::BeginPlay()
 {
@@ -21,6 +22,18 @@ void AMyPlayerController::BeginPlay()
 	//	SpawnParams);
 	//PortalManager->AttachToActor(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
 	//PortalManager->SetControllerOwner(this);
+}
+
+void AMyPlayerController::AddTempCamera(UCameraComponent* _TempCamera)
+{
+	TempCamera = _TempCamera;
+	isTemp = true;
+}
+
+void AMyPlayerController::RemoveTempCamera()
+{
+	TempCamera = nullptr;
+	isTemp = true;
 }
 
 FMatrix AMyPlayerController::GetCameraProjectionMatrix()
@@ -43,6 +56,9 @@ FMatrix AMyPlayerController::GetCameraProjectionMatrix()
 UCameraComponent* AMyPlayerController::GetCurrentCamera() {
 
 	APawn* CurrentPawn = GetPawn();
+
+	if(isTemp && TempCamera->IsValidLowLevel())
+		return TempCamera;
 
 	if (!CurrentPawn)
 		return nullptr;
