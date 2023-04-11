@@ -139,6 +139,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{c4e6df40-80ac-4875-abed-bd2deb98698b}">
+		<property name="volume">
+			<value>5</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{30d243e7-3382-4b31-897a-f36c468e3f17}</destination>
 		</relationship>
@@ -636,6 +639,8 @@
 		<relationship name="effects">
 			<destination>{1dceb85c-6085-4112-a1a2-e2761b0bc63e}</destination>
 			<destination>{8fec86c9-34f2-4ca1-b668-ba42de391da2}</destination>
+			<destination>{d3267b2b-c080-4be1-b92b-a0e50dbcb62f}</destination>
+			<destination>{6f794407-4941-4047-92d0-abe4b048c2bf}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{1eefa47c-1fc9-41a5-b13c-9e20495fba49}" />
@@ -704,7 +709,6 @@
 	<object class="MixerBusEffectChain" id="{15633297-4475-4c3b-abde-5ede23d7df75}">
 		<relationship name="effects">
 			<destination>{5fd607fb-18c8-418e-a9ee-428a7ee34dea}</destination>
-			<destination>{78b26d84-8311-4218-b570-5e905efe9387}</destination>
 			<destination>{2733eca3-17db-483a-8421-84ee1ad09c83}</destination>
 		</relationship>
 	</object>
@@ -833,10 +837,9 @@
 	</object>
 	<object class="MixerBusFader" id="{1dceb85c-6085-4112-a1a2-e2761b0bc63e}" />
 	<object class="SpatialiserEffect" id="{8fec86c9-34f2-4ca1-b668-ba42de391da2}" />
-	<object class="MixerBusFader" id="{5fd607fb-18c8-418e-a9ee-428a7ee34dea}" />
-	<object class="ThreeEQEffect" id="{78b26d84-8311-4218-b570-5e905efe9387}">
+	<object class="ThreeEQEffect" id="{d3267b2b-c080-4be1-b92b-a0e50dbcb62f}">
 		<property name="lowGain">
-			<value>-9</value>
+			<value>-26</value>
 		</property>
 		<property name="midGain">
 			<value>-23.5</value>
@@ -845,6 +848,18 @@
 			<value>-13.5</value>
 		</property>
 	</object>
+	<object class="CompressorEffect" id="{6f794407-4941-4047-92d0-abe4b048c2bf}">
+		<property name="ratio">
+			<value>5</value>
+		</property>
+		<property name="releaseTime">
+			<value>480</value>
+		</property>
+		<property name="gain">
+			<value>-5</value>
+		</property>
+	</object>
+	<object class="MixerBusFader" id="{5fd607fb-18c8-418e-a9ee-428a7ee34dea}" />
 	<object class="CompressorEffect" id="{2733eca3-17db-483a-8421-84ee1ad09c83}">
 		<property name="ratio">
 			<value>5</value>
