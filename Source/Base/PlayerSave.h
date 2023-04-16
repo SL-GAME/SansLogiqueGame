@@ -36,6 +36,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Range")
 	float detectionRange = 180.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Puzzle")
+	bool firstPiece = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Puzzle")
+	bool secondPiece = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Puzzle")
+	int puzzleProgress = 0;
+
 	UFUNCTION(BlueprintPure)
 		float GetRoomRange() { return 180.0f; }
 
