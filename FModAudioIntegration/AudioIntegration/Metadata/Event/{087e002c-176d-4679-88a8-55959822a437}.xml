@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{087e002c-176d-4679-88a8-55959822a437}">
 		<property name="name">
-			<value>AlambicCompletionSound</value>
+			<value>AlambicStepCompletionSound</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>

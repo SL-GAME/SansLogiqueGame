@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{8184b979-7c8a-4319-aba8-4a26b6c90615}">
 		<property name="name">
-			<value>AlambicEngineRunning</value>
+			<value>AlambicEngineRunningLow</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
