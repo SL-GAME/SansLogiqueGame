@@ -56,15 +56,17 @@ void APortal::BeginPlay()
     if (UGameplayStatics::GetPlayerController(GetWorld(), 0) != nullptr)
         ControllerOwner = Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
     
-    if(LinkedPortal->isAlwaysActive)
-        LinkedPortal->SetRTT(PortalTexture);
-    else
-        LinkedPortal->ClearRTT();
+    if (LinkedPortal->IsValidLowLevel()) {
+        if (LinkedPortal->isAlwaysActive)
+            LinkedPortal->SetRTT(PortalTexture);
+        else
+            LinkedPortal->ClearRTT();
+    }
 }
 
 void APortal::InitSceneCapture()
 {
-    SceneCapture->bCaptureEveryFrame = LinkedPortal->isAlwaysActive;
+    SceneCapture->bCaptureEveryFrame = false; // LinkedPortal->isAlwaysActive;
     SceneCapture->bCaptureOnMovement = false;
     SceneCapture->LODDistanceFactor = 3; //Force bigger LODs for faster computations
     SceneCapture->bEnableClipPlane = true;

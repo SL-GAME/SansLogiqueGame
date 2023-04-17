@@ -59,6 +59,10 @@ void UPortalManagerComponent::UpdatePortalsInWorld() {
 	for (TActorIterator<APortal>Portal(GetWorld()); Portal; ++Portal)
 	{
 		Portal->SetIsActive(false);
+
+		if (Portal->isNeverActive || !Portal->LinkedPortal->IsValidLowLevel())
+			continue;
+
 		if (!Portal->isAlwaysActive) {
 			float NewDistance = FMath::Abs(FVector::Dist(PlayerLocation, Portal->GetActorLocation()));
 			if (!OnlyNearest)
