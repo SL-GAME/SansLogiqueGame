@@ -95,6 +95,8 @@ void APortal::InitTextureTarget()
     int32 CurrentSizeY = 1080;
     PortalTexture = NewObject<UTextureRenderTarget2D>();
     check(PortalTexture);
+    AMyPlayerController* PC = Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+    PC->GetViewportSize(CurrentSizeX, CurrentSizeY);
     PortalTexture->RenderTargetFormat = ETextureRenderTargetFormat::RTF_RGBA16f;
     PortalTexture->Filter = TextureFilter::TF_Bilinear;
     PortalTexture->SizeX = CurrentSizeX * PortalQuality;
