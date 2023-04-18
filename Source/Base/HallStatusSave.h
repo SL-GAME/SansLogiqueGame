@@ -15,6 +15,7 @@ enum class EPortalHall : uint8 {
 	VE_DayForest       UMETA(DisplayName = "Day Foret"),
 	VE_Abstract      UMETA(DisplayName = "Abstract"),
 	VE_NightForest        UMETA(DisplayName = "Night Forest"),
+	VE_BackCorridor      UMETA(DisplayName = "Back Corridor"),
 };
 
 
