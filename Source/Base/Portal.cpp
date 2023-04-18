@@ -56,15 +56,17 @@ void APortal::BeginPlay()
     if (UGameplayStatics::GetPlayerController(GetWorld(), 0) != nullptr)
         ControllerOwner = Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
     
-    if(LinkedPortal->isAlwaysActive)
-        LinkedPortal->SetRTT(PortalTexture);
-    else
-        LinkedPortal->ClearRTT();
+    if (LinkedPortal->IsValidLowLevel()) {
+        if (LinkedPortal->isAlwaysActive)
+            LinkedPortal->SetRTT(PortalTexture);
+        else
+            LinkedPortal->ClearRTT();
+    }
 }
 
 void APortal::InitSceneCapture()
 {
-    SceneCapture->bCaptureEveryFrame = LinkedPortal->isAlwaysActive;
+    SceneCapture->bCaptureEveryFrame = false; // LinkedPortal->isAlwaysActive;
     SceneCapture->bCaptureOnMovement = false;
     SceneCapture->LODDistanceFactor = 3; //Force bigger LODs for faster computations
     SceneCapture->bEnableClipPlane = true;
@@ -95,6 +97,8 @@ void APortal::InitTextureTarget()
     int32 CurrentSizeY = 1080;
     PortalTexture = NewObject<UTextureRenderTarget2D>();
     check(PortalTexture);
+    AMyPlayerController* PC = Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+    PC->GetViewportSize(CurrentSizeX, CurrentSizeY);
     PortalTexture->RenderTargetFormat = ETextureRenderTargetFormat::RTF_RGBA16f;
     PortalTexture->Filter = TextureFilter::TF_Bilinear;
     PortalTexture->SizeX = CurrentSizeX * PortalQuality;
