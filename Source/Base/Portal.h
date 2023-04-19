@@ -48,6 +48,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool isAlwaysActive;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool isNeverActive;
+
 	AMyPlayerController* ControllerOwner;
 
 	TArray<AFPCharacter*> ActorsInPortal;

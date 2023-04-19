@@ -168,6 +168,9 @@ protected:
 
 
 public:
+
+	// Can player be teleported by a portal
+	bool canBeTeleported;
 	
 	// Sets default values for this character's properties
 	AFPCharacter(const FObjectInitializer& ObjectInitializer);

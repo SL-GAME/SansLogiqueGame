@@ -37,6 +37,12 @@ public :
 		FString TutoMode;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
+	int HintLevel = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
+	int HudLevel = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
 		bool ToggleSprint = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
