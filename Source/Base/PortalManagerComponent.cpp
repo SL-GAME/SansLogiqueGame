@@ -56,7 +56,7 @@ void UPortalManagerComponent::UpdatePortalsInWorld() {
 	APortal* ActivePortal = nullptr;
 	FVector CameraForward = PC->GetCurrentCamera()->GetForwardVector();
 
-	for (TActorIterator<APortal>Portal(GetWorld()); Portal; ++Portal)
+	for (TActorIterator<APortal>Portal(GetWorld()); Portal; ++Portal)	// Changer le GetAllActorOfClass par un systeme d'abonnement : les portails s'abonnent a la liste au begin play, et se desabonnent au on destroy
 	{
 		if(*Portal != CurrentPortal)
 			Portal->SetIsActive(false);
