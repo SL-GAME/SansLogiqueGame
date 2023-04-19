@@ -107,6 +107,9 @@ void AFPCharacter::Tick(float DeltaTime)
 	if (bEnableHeadBobbing && Settings->BobbingEnable)
 		HeadBobbing();
 
+	if (!canBeTeleported)
+		canBeTeleported = true;
+
 	// Timelines
 	T_Crouch.TickTimeline(DeltaTime);
 	T_GetUp.TickTimeline(DeltaTime);
