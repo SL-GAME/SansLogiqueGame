@@ -58,9 +58,10 @@ void UPortalManagerComponent::UpdatePortalsInWorld() {
 
 	for (TActorIterator<APortal>Portal(GetWorld()); Portal; ++Portal)
 	{
-		Portal->SetIsActive(false);
+		if(*Portal != CurrentPortal)
+			Portal->SetIsActive(false);
 
-		if (Portal->isNeverActive || !Portal->LinkedPortal->IsValidLowLevel())
+		if (Portal->isNeverActive || !Portal->LinkedPortal->IsValidLowLevelFast())
 			continue;
 
 		if (!Portal->isAlwaysActive) {
@@ -77,8 +78,15 @@ void UPortalManagerComponent::UpdatePortalsInWorld() {
 		}
 	}
 
-	if (OnlyNearest && ActivePortal != nullptr)
-		ActivePortal->SetIsActive(true);
+
+	if (ActivePortal != CurrentPortal) {
+		if (CurrentPortal->IsValidLowLevelFast())
+			CurrentPortal->SetIsActive(false);
+		CurrentPortal = ActivePortal;
+
+		if (CurrentPortal->IsValidLowLevelFast() && !CurrentPortal->GetIsActive())
+			CurrentPortal->SetIsActive(true);
+	}
 }
 
 
