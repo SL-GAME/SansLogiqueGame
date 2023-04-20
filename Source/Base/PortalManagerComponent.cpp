@@ -56,9 +56,14 @@ void UPortalManagerComponent::UpdatePortalsInWorld() {
 	APortal* ActivePortal = nullptr;
 	FVector CameraForward = PC->GetCurrentCamera()->GetForwardVector();
 
-	for (TActorIterator<APortal>Portal(GetWorld()); Portal; ++Portal)
+	for (TActorIterator<APortal>Portal(GetWorld()); Portal; ++Portal)	// Changer le GetAllActorOfClass par un systeme d'abonnement : les portails s'abonnent a la liste au begin play, et se desabonnent au on destroy
 	{
-		Portal->SetIsActive(false);
+		if(*Portal != CurrentPortal)
+			Portal->SetIsActive(false);
+
+		if (Portal->isNeverActive || !Portal->LinkedPortal->IsValidLowLevelFast())
+			continue;
+
 		if (!Portal->isAlwaysActive) {
 			float NewDistance = FMath::Abs(FVector::Dist(PlayerLocation, Portal->GetActorLocation()));
 			if (!OnlyNearest)
@@ -73,8 +78,15 @@ void UPortalManagerComponent::UpdatePortalsInWorld() {
 		}
 	}
 
-	if (OnlyNearest && ActivePortal != nullptr)
-		ActivePortal->SetIsActive(true);
+
+	if (ActivePortal != CurrentPortal) {
+		if (CurrentPortal->IsValidLowLevelFast())
+			CurrentPortal->SetIsActive(false);
+		CurrentPortal = ActivePortal;
+
+		if (CurrentPortal->IsValidLowLevelFast() && !CurrentPortal->GetIsActive())
+			CurrentPortal->SetIsActive(true);
+	}
 }
 
 
