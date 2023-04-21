@@ -137,6 +137,9 @@ void APortal::CheckIfPlayerShouldTeleport(AFPCharacter* Player)
 
 void APortal::TeleportPlayer(AFPCharacter* Player)
 {
+    if (!Player->canBeTeleported)
+        return;
+
     SceneCapture->bCameraCutThisFrame = true;
     LinkedPortal->SceneCapture->bCameraCutThisFrame = true;
     ControllerOwner->PlayerCameraManager->SetGameCameraCutThisFrame();
@@ -165,6 +168,7 @@ void APortal::TeleportPlayer(AFPCharacter* Player)
     newVT.SetRotation(Player->GetController()->GetControlRotation().Quaternion());
     Player->GetMovementComponent()->Velocity = newVT.TransformVectorNoScale(relativeVelocity);
 
+    Player->canBeTeleported = false;
     OnPlayerCrossPortal.Broadcast();
 }
 
