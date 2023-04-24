@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="AudioFile" id="{cc72d87b-805c-40ca-a2e0-0a0fb67935a2}">
+	<object class="AudioFile" id="{bcca9269-658e-4c22-9db5-c9f636cf82e2}">
 		<property name="assetPath">
-			<value>Musics/CHAMBRE ADOS V6/SANS_LOGIQUE_CHAMBRE_ADO_V6_V.wav</value>
+			<value>Musics/CHAMBRE ADOS V6/SANS_LOGIQUE_CHAMBRE_ADO_V6_III_remix.wav</value>
 		</property>
 		<property name="isStreaming">
 			<value>true</value>
