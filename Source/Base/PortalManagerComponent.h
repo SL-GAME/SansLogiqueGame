@@ -25,7 +25,11 @@ public :
 	bool OnlyNearest;
 
 protected :
+	UPROPERTY()
 	TArray<APortal*> PortalsInScene;
+
+	UPROPERTY()
+	APortal* CurrentPortal;
 
 public:	
 	// Sets default values for this component's properties
