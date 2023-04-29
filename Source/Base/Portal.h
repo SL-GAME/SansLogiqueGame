@@ -67,6 +67,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Proto|Portal")
 	void SetRTT(UTextureRenderTarget2D* RenderTexture);
 
+	UFUNCTION(BlueprintCallable, Category = "Proto|Portal")
+	void ResetRTT();
+
 	void UpdatePortal();
 
 	bool GetIsActive();
