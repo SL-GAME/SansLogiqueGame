@@ -31,6 +31,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Abilities")
 	TArray<bool> abilities = TArray<bool>({ false, false, true, false });
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pages found")
+	TArray<bool> pagesFound = TArray<bool>({true, false, false, false, false,
+											false, false, false, false, false,
+											false, false, true, true, false });
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Respawn")
 	EWorldCheckpoint lastCheckPoint = EWorldCheckpoint::VE_CP00_Bedroom;
 
