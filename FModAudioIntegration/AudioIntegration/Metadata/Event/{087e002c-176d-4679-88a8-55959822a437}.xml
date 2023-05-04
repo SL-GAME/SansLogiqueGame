@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{087e002c-176d-4679-88a8-55959822a437}">
 		<property name="name">
-			<value>AlambicCompletionSound</value>
+			<value>AlambicStepCompletionSound</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
@@ -60,7 +60,7 @@
 	<object class="MarkerTrack" id="{3653b40c-41dd-44d0-8b19-07f97e116648}" />
 	<object class="GroupTrack" id="{56d2c989-f788-4cc9-869a-ce5cfa436103}">
 		<relationship name="modules">
-			<destination>{073081d0-ddf4-4acc-8633-7467238fbba5}</destination>
+			<destination>{bbde3fd5-9d59-4c19-b758-d7fe14cd2a34}</destination>
 		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{814baaae-b3f7-43a2-b560-ba0ce6d0aab3}</destination>
@@ -68,7 +68,7 @@
 	</object>
 	<object class="Timeline" id="{9e78ce83-0929-42f2-8bf8-12b95a8b6021}">
 		<relationship name="modules">
-			<destination>{073081d0-ddf4-4acc-8633-7467238fbba5}</destination>
+			<destination>{bbde3fd5-9d59-4c19-b758-d7fe14cd2a34}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{8ac80d10-8c7c-4556-ad25-1cedcf7a1b31}">
@@ -88,15 +88,12 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{57a96247-94d7-4f7a-bacc-8170bb89a1ca}" />
-	<object class="SingleSound" id="{073081d0-ddf4-4acc-8633-7467238fbba5}">
+	<object class="SingleSound" id="{bbde3fd5-9d59-4c19-b758-d7fe14cd2a34}">
 		<property name="length">
-			<value>1.046687845303867</value>
-		</property>
-		<property name="timelockedOffset">
-			<value>0.27331215469613268</value>
+			<value>2</value>
 		</property>
 		<relationship name="audioFile">
-			<destination>{d2b45e97-1c33-4b05-aeb1-c546de25fc47}</destination>
+			<destination>{9faf706d-7646-4343-bcf0-a800cebc9baf}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{814baaae-b3f7-43a2-b560-ba0ce6d0aab3}">
