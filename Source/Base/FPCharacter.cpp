@@ -170,7 +170,7 @@ void AFPCharacter::LookRightAndLeft(float Value)
 void AFPCharacter::MoveForwardBackward(float Value)
 {
 	// Check if character stopped moving
-	if (Value == 0 && bIsSprinting) {
+	if (Value < -0.5f && bIsSprinting) {
 		ToggleRunningState();
 	}
 
