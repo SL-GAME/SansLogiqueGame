@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{4620b63a-70dc-46da-a7b4-81209da3d258}">
 		<property name="assetPath">
-			<value>SD CHAMBRE/FOOTSTEPS/PAS ISOLES/RUN_CHAMBRE_SD_FOOTSTEPS_6.wav</value>
+			<value>PAS ISOLES/RUN_CHAMBRE_SD_FOOTSTEPS_6.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>44.0999985</value>

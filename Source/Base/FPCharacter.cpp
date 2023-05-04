@@ -170,8 +170,15 @@ void AFPCharacter::LookRightAndLeft(float Value)
 void AFPCharacter::MoveForwardBackward(float Value)
 {
 	// Check if character stopped moving
-	if (Value == 0 && bIsSprinting) {
-		ToggleRunningState();
+	if (Value > 0.0f && bIsSprinting) {
+		if (!bIsCurrentlySprinting) {
+			GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+			bIsCurrentlySprinting = true;
+		}
+	}
+	else {
+		GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
+		bIsCurrentlySprinting = false;
 	}
 
 	FRotator Rot = FRotator(0, GetControlRotation().Yaw, 0);
