@@ -199,6 +199,18 @@ void APortal::Tick(float DeltaTime)
     UpdatePortal();
 }
 
+void APortal::ResetRTT()
+{
+    if (LinkedPortal->IsValidLowLevelFast()) {
+        if (isActive) {
+            isActive = false;
+            SetIsActive(true);
+        }
+        else
+            SetRTT(LinkedPortal->PortalTexture);
+    }
+}
+
 void APortal::UpdatePortal() {
     if (isActive || isAlwaysActive) {
         if (ControllerOwner != nullptr)
@@ -244,6 +256,8 @@ void APortal::SetIsActive(bool newIsActive) {
     else
        ClearRTT();
 }
+
+
 
 bool APortal::IsPortalOnViewPort(AMyPlayerController* PC)
 {
