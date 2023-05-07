@@ -135,9 +135,6 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{a9494f06-87ed-4d1d-9db0-02fe98f5bf0b}">
-		<property name="volume">
-			<value>5</value>
-		</property>
 		<relationship name="effectChain">
 			<destination>{ebebf475-bfa6-4611-921a-393c407fde80}</destination>
 		</relationship>
@@ -180,8 +177,14 @@
 		<property name="length">
 			<value>0.45000000000000018</value>
 		</property>
+		<property name="pitch">
+			<value>2</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{0480e60b-cfff-4fcc-882b-7bb930a08f2a}</destination>
+		</relationship>
 		<relationship name="fadeOutCurve">
-			<destination>{7a4cd5a3-3607-4d89-a8b3-6865db4950df}</destination>
+			<destination>{fa248c6c-fe55-4fb0-baee-5ee096328ba0}</destination>
 		</relationship>
 		<relationship name="sounds">
 			<destination>{c2456e6f-a3ef-4993-a04d-4a62704f0a1c}</destination>
@@ -607,7 +610,6 @@
 			<destination>{54f55ff1-9d01-4028-9779-fafd1d8540ba}</destination>
 			<destination>{4e8ce857-ff6b-4d8b-b989-303e6def0652}</destination>
 			<destination>{5aa4ec72-f808-42fc-ace8-cd38a680df50}</destination>
-			<destination>{d8a1ace8-bc7c-4316-a769-68c2caa03537}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{b28f0372-26f7-4734-8efd-61f7c849feb3}" />
@@ -657,12 +659,20 @@
 			<destination>{1f0016f7-49a3-4be5-8db8-d8e5b89845ab}</destination>
 		</relationship>
 	</object>
-	<object class="FadeCurve" id="{7a4cd5a3-3607-4d89-a8b3-6865db4950df}">
+	<object class="RandomizerModulator" id="{0480e60b-cfff-4fcc-882b-7bb930a08f2a}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
+		</property>
+		<property name="amount">
+			<value>6.5</value>
+		</property>
+	</object>
+	<object class="FadeCurve" id="{fa248c6c-fe55-4fb0-baee-5ee096328ba0}">
 		<relationship name="startPoint">
-			<destination>{636f8f7c-6d1d-4d8b-818d-610261118714}</destination>
+			<destination>{8b412417-0bac-4c3f-8210-815fc54e1f63}</destination>
 		</relationship>
 		<relationship name="endPoint">
-			<destination>{b33c99ca-0754-4df2-b324-b1adaf468352}</destination>
+			<destination>{075dc8c6-6c8d-4525-9e5f-bc3b42247605}</destination>
 		</relationship>
 	</object>
 	<object class="SingleSound" id="{c2456e6f-a3ef-4993-a04d-4a62704f0a1c}">
@@ -934,38 +944,27 @@
 	<object class="SpatialiserEffect" id="{4e8ce857-ff6b-4d8b-b989-303e6def0652}" />
 	<object class="ThreeEQEffect" id="{5aa4ec72-f808-42fc-ace8-cd38a680df50}">
 		<property name="lowGain">
-			<value>-20</value>
+			<value>-7.5</value>
 		</property>
 		<property name="midGain">
-			<value>-13</value>
+			<value>-19.5</value>
 		</property>
 		<property name="highGain">
-			<value>-14.5</value>
+			<value>-24.5</value>
 		</property>
 	</object>
-	<object class="CompressorEffect" id="{d8a1ace8-bc7c-4316-a769-68c2caa03537}">
-		<property name="ratio">
-			<value>5</value>
-		</property>
-		<property name="releaseTime">
-			<value>480</value>
-		</property>
-		<property name="gain">
-			<value>-5</value>
-		</property>
-	</object>
-	<object class="AutomationPoint" id="{636f8f7c-6d1d-4d8b-818d-610261118714}">
+	<object class="AutomationPoint" id="{8b412417-0bac-4c3f-8210-815fc54e1f63}">
 		<property name="position">
-			<value>1.55</value>
+			<value>1.6000000000000001</value>
 		</property>
 		<property name="value">
 			<value>1</value>
 		</property>
 		<property name="curveShape">
-			<value>-0.157774568</value>
+			<value>-0.289506376</value>
 		</property>
 	</object>
-	<object class="AutomationPoint" id="{b33c99ca-0754-4df2-b324-b1adaf468352}">
+	<object class="AutomationPoint" id="{075dc8c6-6c8d-4525-9e5f-bc3b42247605}">
 		<property name="position">
 			<value>1.6500000000000001</value>
 		</property>
