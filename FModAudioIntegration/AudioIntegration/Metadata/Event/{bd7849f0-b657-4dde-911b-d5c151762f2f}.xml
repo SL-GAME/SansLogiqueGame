@@ -138,7 +138,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{eb8c4655-4d5a-4c8b-9387-239389b667e0}">
 		<property name="volume">
-			<value>5</value>
+			<value>-2</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{0bb9ece5-c884-4823-a2b4-dfb9e868cfa3}</destination>
@@ -626,7 +626,6 @@
 			<destination>{dba119a5-93e9-423a-8190-5abb4bf206b5}</destination>
 			<destination>{f42929f7-1a08-4356-8790-476b8b2e7118}</destination>
 			<destination>{7a8170fb-f562-4e6e-b9f0-2e58a764a86c}</destination>
-			<destination>{1ef3eb71-61a8-410e-b8a7-c17d0b32daf3}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{02cd6661-1b26-4c84-a0e7-1c7a90c025c9}" />
@@ -871,17 +870,6 @@
 		</property>
 		<property name="highGain">
 			<value>-13.5</value>
-		</property>
-	</object>
-	<object class="CompressorEffect" id="{1ef3eb71-61a8-410e-b8a7-c17d0b32daf3}">
-		<property name="ratio">
-			<value>5</value>
-		</property>
-		<property name="releaseTime">
-			<value>480</value>
-		</property>
-		<property name="gain">
-			<value>-5</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{133eaff8-8d80-4ece-ab62-60dc6f3b93fa}" />
