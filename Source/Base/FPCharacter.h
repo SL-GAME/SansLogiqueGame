@@ -75,6 +75,9 @@ class BASE_API AFPCharacter : public ANinjaCharacter
 		float CrouchedWalkSpeed = 150;
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
 		float RunSpeed = 600;
+
+		UPROPERTY()
+		float NormalSpeed = DefaultWalkSpeed;
 		
 
 		//Character leaning
@@ -140,7 +143,7 @@ class BASE_API AFPCharacter : public ANinjaCharacter
 
 protected:
 
-		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
 		bool bIsSprinting = false;
 
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))

@@ -5,7 +5,7 @@
 			<value>OrbEmission</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{9f070b0f-cc44-4242-b70e-ea4bdad8769f}</destination>
@@ -101,7 +101,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{9a97bad0-de73-4092-90fe-4047ad01bf38}">
 		<property name="volume">
-			<value>-10</value>
+			<value>-5</value>
 		</property>
 		<property name="name">
 			<value>Audio 1</value>
@@ -133,7 +133,6 @@
 	<object class="MixerBusEffectChain" id="{08a1975e-0e0c-4965-911d-21cd654a2d27}">
 		<relationship name="effects">
 			<destination>{7231edbe-fc69-4b38-afa5-6a2793df8f0f}</destination>
-			<destination>{aa1df116-40fd-40e4-8ee3-863c840b5607}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{b500390d-2bb0-4081-8a6e-068220a54bb5}" />
@@ -145,6 +144,5 @@
 	</object>
 	<object class="MixerBusPanner" id="{021286b6-1115-4e13-aa7d-f450942ac58d}" />
 	<object class="MixerBusFader" id="{7231edbe-fc69-4b38-afa5-6a2793df8f0f}" />
-	<object class="SpatialiserEffect" id="{aa1df116-40fd-40e4-8ee3-863c840b5607}" />
 	<object class="MixerBusFader" id="{84144222-714a-41a3-839f-1bcc6a96ee33}" />
 </objects>

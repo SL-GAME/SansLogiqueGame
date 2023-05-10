@@ -177,7 +177,8 @@ void AFPCharacter::MoveForwardBackward(float Value)
 		}
 	}
 	else {
-		GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
+		//GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
+		GetCharacterMovement()->MaxWalkSpeed = NormalSpeed;
 		bIsCurrentlySprinting = false;
 	}
 
@@ -276,14 +277,18 @@ void AFPCharacter::CrouchDown()
 				// Checking obstacles
 				if (CheckCrouchingObstacle())
 				{
-					GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
+					//GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
+					NormalSpeed = DefaultWalkSpeed;
+					GetCharacterMovement()->MaxWalkSpeed = NormalSpeed;
 					T_GetUp.PlayFromStart();
 					IsCrouched = false;
 					DisableVignetteWhenCrouched();
 				}
 			}
 			else {
-				GetCharacterMovement()->MaxWalkSpeed = CrouchedWalkSpeed;
+				//GetCharacterMovement()->MaxWalkSpeed = CrouchedWalkSpeed;
+				NormalSpeed = CrouchedWalkSpeed;
+				GetCharacterMovement()->MaxWalkSpeed = NormalSpeed;
 				T_Crouch.PlayFromStart();
 				IsCrouched = true;
 				EnableVignetteWhenCrouched();
