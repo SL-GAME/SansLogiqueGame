@@ -53,7 +53,7 @@
 			<destination>{bd29dd8a-e519-47f2-8f2c-85a523489813}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{e24d72ec-2f08-4c5c-9607-891c9555eddc}</destination>
+			<destination>{c62002eb-89b8-460e-8ffa-2b12942a8ac3}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{58cb48bd-8f12-4688-bd08-73e15377315e}" />
@@ -73,7 +73,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{afa606e9-dbaa-4c11-88f8-9861fa9fe54c}">
 		<property name="volume">
-			<value>-4.5</value>
+			<value>-6</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{99bf0a37-2f35-46a4-b6ed-01df0c837101}</destination>
@@ -96,7 +96,7 @@
 			<value>0.62996052494743648</value>
 		</property>
 		<property name="pitch">
-			<value>-4</value>
+			<value>-10</value>
 		</property>
 		<relationship name="fadeOutCurve">
 			<destination>{8d8eff3c-a22d-49a3-a70e-16db7718a0eb}</destination>
@@ -143,7 +143,7 @@
 	<object class="MixerBusFader" id="{3b1b7a42-88ed-4ea7-becf-534c3a124cdc}" />
 	<object class="AutomationPoint" id="{448a99de-cc03-4fee-8049-e59ef45b3945}">
 		<property name="position">
-			<value>0.35000000000000003</value>
+			<value>0.35000000000000009</value>
 		</property>
 		<property name="value">
 			<value>1</value>
