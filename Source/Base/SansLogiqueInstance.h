@@ -38,6 +38,9 @@ class BASE_API USansLogiqueInstance : public UGameInstance
 	UPROPERTY()
 	UPlayerSave* PlayerData;
 
+	UPROPERTY()
+	bool bUseGamepad = false;
+
 public:
 
 	UFUNCTION(BlueprintCallable, Category = "Settings Save")
@@ -45,6 +48,12 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Settings Save")
 	USettingsSave* LoadSettings();
+
+	UFUNCTION(BlueprintCallable, Category = "InstanceController")
+	void setUseGamepad(bool useGamepad);
+
+	UFUNCTION(BlueprintPure, Category = "InstanceController")
+	bool getUseGamepad();
 
 	UFUNCTION(BlueprintCallable, Category = "Hall Status Save")
 	void SaveHallData();

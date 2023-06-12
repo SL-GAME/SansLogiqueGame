@@ -121,8 +121,8 @@ void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	// Character default actions
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AFPCharacter::FPJump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &AFPCharacter::FPStopJumping);
 	
 	// Camera movements inputs
 	PlayerInputComponent->BindAxis("LookUp/LookDown", this, &AFPCharacter::LookUpAndDown);
@@ -149,6 +149,20 @@ void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction("RightAction", IE_Pressed, this, &AFPCharacter::RightActionPressed);
 	PlayerInputComponent->BindAction("RightAction", IE_Released, this, &AFPCharacter::RightActionReleased);
 
+}
+
+void AFPCharacter::FPJump()
+{
+	if (!bCanMove)
+		return;
+	Jump();
+}
+
+void AFPCharacter::FPStopJumping()
+{
+	if (!bCanMove)
+		return;
+	StopJumping();
 }
 
 void AFPCharacter::LookUpAndDown(float Value)
@@ -265,6 +279,9 @@ void AFPCharacter::CrouchDownReleased() {
 
 void AFPCharacter::CrouchDown()
 {
+	if (!bCanMove)
+		return;
+
 	if (bIsSprinting) {
 		bIsSprinting = false;
 	}
