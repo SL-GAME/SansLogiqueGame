@@ -42,6 +42,16 @@ USettingsSave* USansLogiqueInstance::LoadSettings()
 	return SettingsData;
 }
 
+void USansLogiqueInstance::setUseGamepad(bool useGamepad)
+{
+	bUseGamepad = useGamepad;
+}
+
+bool USansLogiqueInstance::getUseGamepad()
+{
+	return bUseGamepad;
+}
+
 void USansLogiqueInstance::SaveHallData()
 {
 	if (IsValid(HallData))
