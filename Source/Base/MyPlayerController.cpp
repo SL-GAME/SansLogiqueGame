@@ -75,3 +75,20 @@ UCameraComponent* AMyPlayerController::GetCurrentCamera() {
 	
 	return nullptr;
 }
+
+void AMyPlayerController::AsyncLevelLoad(const FString& LevelDir, const FString& LevelName)
+{
+	LoadPackageAsync(LevelDir + LevelName,
+		FLoadPackageAsyncDelegate::CreateLambda([=](const FName& PackageName, UPackage* LoadedPackage, EAsyncLoadingResult::Type Result)
+			{
+				if (Result == EAsyncLoadingResult::Succeeded)
+					AsyncLevelLoadFinished(LevelName);
+			}
+		),
+		0, PKG_ContainsMap);
+}
+
+void AMyPlayerController::AsyncLevelLoadFinished(const FString LevelName)
+{
+	UGameplayStatics::OpenLevel(this, FName(*LevelName));
+}

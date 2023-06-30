@@ -39,6 +39,14 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	UCameraComponent* GetCurrentCamera();
+
+public:
+
+	UFUNCTION(BlueprintCallable, Category = "Async Level Loading")
+		void AsyncLevelLoad(const FString& LevelDir, const FString& LevelName);
+
+private:
+	void AsyncLevelLoadFinished(const FString LevelName);
 	
 
 protected:
