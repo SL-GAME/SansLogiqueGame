@@ -138,6 +138,8 @@ class BASE_API AFPCharacter : public ANinjaCharacter
 		// Character movements booleans
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
 		bool IsCrouched = false;
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		bool bCanMove = true;
 		bool bIsLeaningRight = false;
 		bool bIsLeaningLeft = false;
 
@@ -211,6 +213,8 @@ public:
 	void LeanMovement(float);
 	void CameraLean(int iteration);
 	void HeadBobbing();
+	void FPJump();
+	void FPStopJumping();
 
 	// Character actions events
 	void LeftActionPressed();
