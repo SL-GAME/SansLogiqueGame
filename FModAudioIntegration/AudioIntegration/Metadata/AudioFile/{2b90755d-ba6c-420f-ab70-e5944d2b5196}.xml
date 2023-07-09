@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{2b90755d-ba6c-420f-ab70-e5944d2b5196}">
+		<property name="assetPath">
+			<value>Sylvains/Sylvain 9.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.54546485260770972</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{8fa38bf8-edee-4f9e-a431-802f1c44ab48}</destination>
+		</relationship>
+	</object>
+</objects>
