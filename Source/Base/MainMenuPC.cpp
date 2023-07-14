@@ -6,17 +6,23 @@
 
 void AMainMenuPC::AsyncLevelLoad(const FString& LevelDir, const FString& LevelName)
 {
+	LevelToLoad = LevelName;
+
 	LoadPackageAsync(LevelDir + LevelName,
 		FLoadPackageAsyncDelegate::CreateLambda([=](const FName& PackageName, UPackage* LoadedPackage, EAsyncLoadingResult::Type Result)
 			{
 				if (Result == EAsyncLoadingResult::Succeeded)
-				AsyncLevelLoadFinished(LevelName);
+					LevelLoadingEnd();
 			}
 		),
 		0, PKG_ContainsMap);
 }
 
-void AMainMenuPC::AsyncLevelLoadFinished(const FString LevelName)
+void AMainMenuPC::LevelLoadingEnd_Implementation()
 {
-	UGameplayStatics::OpenLevel(this, FName(*LevelName));
+}
+
+void AMainMenuPC::MoveToLoadedLevel()
+{
+	UGameplayStatics::OpenLevel(this, FName(*LevelToLoad));
 }
