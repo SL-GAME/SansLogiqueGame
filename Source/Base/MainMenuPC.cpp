@@ -12,7 +12,7 @@ void AMainMenuPC::AsyncLevelLoad(const FString& LevelDir, const FString& LevelNa
 		FLoadPackageAsyncDelegate::CreateLambda([=](const FName& PackageName, UPackage* LoadedPackage, EAsyncLoadingResult::Type Result)
 			{
 				if (Result == EAsyncLoadingResult::Succeeded)
-					LevelLoadingEnd();
+					OnLoadPackageSucceed(); // LevelLoadingEnd();
 			}
 		),
 		0, PKG_ContainsMap);
@@ -21,6 +21,13 @@ void AMainMenuPC::AsyncLevelLoad(const FString& LevelDir, const FString& LevelNa
 void AMainMenuPC::LevelLoadingEnd_Implementation()
 {
 }
+
+void AMainMenuPC::OnLoadPackageSucceed()
+{
+	// cLoadTimerHandler is a FTimeHandler
+	GetWorld()->GetTimerManager().SetTimer(cLoadTimerHandler, this, &AMainMenuPC::LevelLoadingEnd, 3.0f, false);
+}
+
 
 void AMainMenuPC::MoveToLoadedLevel()
 {

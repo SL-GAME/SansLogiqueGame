@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "MainMenuPC.generated.h"
 
+struct FTimerHandle;
 /**
  * 
  */
@@ -25,5 +26,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Async Level Loading")
 	void MoveToLoadedLevel();
+
+private:
+
+	FTimerHandle cLoadTimerHandler;
+	void OnLoadPackageSucceed();
 	
 };
