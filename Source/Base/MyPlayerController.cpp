@@ -97,7 +97,10 @@ void AMyPlayerController::LevelLoadingEnd_Implementation()
 void AMyPlayerController::OnLoadPackageSucceed()
 {
 	// cLoadTimerHandler is a FTimeHandler
-	GetWorld()->GetTimerManager().SetTimer(cLoadTimerHandler, this, &AMyPlayerController::LevelLoadingEnd, 3.0f, false);
+	//if(!IsPaused)
+	//	GetWorld()->GetTimerManager().SetTimer(cLoadTimerHandler, this, &AMyPlayerController::LevelLoadingEnd, 3.0f, false);
+	//else
+	LevelLoadingEnd();
 }
 
 
