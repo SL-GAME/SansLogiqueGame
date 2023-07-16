@@ -40,13 +40,24 @@ public:
 	UFUNCTION(BlueprintCallable)
 	UCameraComponent* GetCurrentCamera();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Level to load")
+	FString LevelToLoad;
+
 public:
 
 	UFUNCTION(BlueprintCallable, Category = "Async Level Loading")
 		void AsyncLevelLoad(const FString& LevelDir, const FString& LevelName);
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Async Level Loading")
+		void LevelLoadingEnd();
+
+	UFUNCTION(BlueprintCallable, Category = "Async Level Loading")
+		void MoveToLoadedLevel();
+
 private:
-	void AsyncLevelLoadFinished(const FString LevelName);
+
+	FTimerHandle cLoadTimerHandler;
+	void OnLoadPackageSucceed();
 	
 
 protected:

@@ -78,17 +78,30 @@ UCameraComponent* AMyPlayerController::GetCurrentCamera() {
 
 void AMyPlayerController::AsyncLevelLoad(const FString& LevelDir, const FString& LevelName)
 {
+	LevelToLoad = LevelName;
+
 	LoadPackageAsync(LevelDir + LevelName,
 		FLoadPackageAsyncDelegate::CreateLambda([=](const FName& PackageName, UPackage* LoadedPackage, EAsyncLoadingResult::Type Result)
 			{
 				if (Result == EAsyncLoadingResult::Succeeded)
-					AsyncLevelLoadFinished(LevelName);
+					OnLoadPackageSucceed();  //AsyncLevelLoadFinished(LevelName);
 			}
 		),
 		0, PKG_ContainsMap);
 }
 
-void AMyPlayerController::AsyncLevelLoadFinished(const FString LevelName)
+void AMyPlayerController::LevelLoadingEnd_Implementation()
 {
-	UGameplayStatics::OpenLevel(this, FName(*LevelName));
+}
+
+void AMyPlayerController::OnLoadPackageSucceed()
+{
+	// cLoadTimerHandler is a FTimeHandler
+	GetWorld()->GetTimerManager().SetTimer(cLoadTimerHandler, this, &AMyPlayerController::LevelLoadingEnd, 3.0f, false);
+}
+
+
+void AMyPlayerController::MoveToLoadedLevel()
+{
+	UGameplayStatics::OpenLevel(this, FName(*LevelToLoad));
 }
