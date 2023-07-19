@@ -257,6 +257,9 @@ void AFPCharacter::SprintReleased() {
 
 void AFPCharacter::Sprint()
 {
+	if (bStoryMode)
+		return;
+
 	if (!bIsSprinting) {
 		if(!IsCrouched)
 			ToggleRunningState();
