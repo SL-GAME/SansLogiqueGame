@@ -71,7 +71,8 @@ void APortal::InitSceneCapture()
     SceneCapture->LODDistanceFactor = 3; //Force bigger LODs for faster computations
     SceneCapture->bEnableClipPlane = true;
     SceneCapture->bUseCustomProjectionMatrix = true;
-    SceneCapture->CaptureSource = ESceneCaptureSource::SCS_FinalColorHDR; // ESceneCaptureSource::SCS_SceneColorHDRNoAlpha;
+    //SceneCapture->CaptureSource = ESceneCaptureSource::SCS_SceneColorHDRNoAlpha; //ESceneCaptureSource::SCS_FinalColorHDR; // 
+
 
     //Setup Post-Process of SceneCapture (optimization : disable Motion Blur, etc)
     FPostProcessSettings CaptureSettings;
@@ -80,7 +81,7 @@ void APortal::InitSceneCapture()
     CaptureSettings.bOverride_SceneFringeIntensity = true;
     CaptureSettings.bOverride_FilmGrainIntensity = true;
     CaptureSettings.bOverride_ScreenSpaceReflectionQuality = true;
-    CaptureSettings.AmbientOcclusionQuality = 100.0f; //0=lowest quality..100=maximum quality
+    CaptureSettings.AmbientOcclusionQuality = 0.0f; //0=lowest quality..100=maximum quality
     CaptureSettings.MotionBlurAmount = 0.0f; //0 = disabled
     CaptureSettings.SceneFringeIntensity = 0.0f; //0 = disabled
     CaptureSettings.FilmGrainIntensity = 0.0f; //0 = disabled
