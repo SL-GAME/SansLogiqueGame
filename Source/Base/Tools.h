@@ -22,5 +22,8 @@ public:
 	static void PrintWarningOnScreen(FString);
 	static void PrintMessageOnScreen(FString);
 	static void PrintMessageOnScreen(FString, FColor);
+
+	UFUNCTION(BlueprintPure, Category = "Actor", meta = (DefaultToSelf = "Target"))
+		static bool IsInputEnabled(APawn* Target);
 	
 };
