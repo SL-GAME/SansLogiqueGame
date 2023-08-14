@@ -47,3 +47,7 @@ void UTools::PrintMessageOnScreen(FString message, FColor color) {
 
 }
 
+bool UTools::IsInputEnabled(APawn* Target)
+{
+	return Target->InputEnabled() && IsValid(Target->Controller);
+}
