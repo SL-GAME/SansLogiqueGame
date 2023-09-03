@@ -51,3 +51,16 @@ bool UTools::IsInputEnabled(APawn* Target)
 {
 	return Target->InputEnabled() && IsValid(Target->Controller);
 }
+
+FString UTools::GetAppVersion()
+{
+	FString AppVersion;
+	GConfig->GetString(
+		TEXT("/Script/EngineSettings.GeneralProjectSettings"),
+		TEXT("ProjectVersion"),
+		AppVersion,
+		GGameIni
+	);
+
+	return AppVersion;
+}

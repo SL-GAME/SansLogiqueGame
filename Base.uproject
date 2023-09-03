@@ -32,5 +32,9 @@
 			"Name": "FMODStudio",
 			"Enabled": true
 		},
+		{
+			"Name": "OnlineSubsystemSteam",
+			"Enabled": true
+		}
 	]
 }

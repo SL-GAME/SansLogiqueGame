@@ -76,11 +76,14 @@ void AFPCharacter::BeginPlay()
 	
 	// Bind timelines
 	FOnTimelineFloat TimelineProgress;
+	FOnTimelineEventStatic TimelineFinishedCallback;
+	TimelineFinishedCallback.BindUFunction(this, FName("CrouchTimelineFinishedCallback"));
 
 	if (GetUpCurve) {
 
 		TimelineProgress.BindUFunction(this, FName("GetUpProgress"));
 		T_GetUp.AddInterpFloat(GetUpCurve, TimelineProgress);
+		T_GetUp.SetTimelineFinishedFunc(TimelineFinishedCallback);
 		T_GetUp.SetLooping(false);
 	}
 	else {
@@ -91,6 +94,7 @@ void AFPCharacter::BeginPlay()
 
 		TimelineProgress.BindUFunction(this, FName("CrouchProgress"));
 		T_Crouch.AddInterpFloat(CrouchCurve, TimelineProgress);
+		T_Crouch.SetTimelineFinishedFunc(TimelineFinishedCallback);
 		T_Crouch.SetLooping(false);
 	}
 	else {
@@ -297,18 +301,32 @@ void AFPCharacter::CrouchDown()
 				// Checking obstacles
 				if (CheckCrouchingObstacle())
 				{
+					if (bIsInCrouchTransition) 
+					{
+						T_GetUp.Stop();
+						T_Crouch.Stop();
+					}
+
 					//GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
 					NormalSpeed = DefaultWalkSpeed;
 					GetCharacterMovement()->MaxWalkSpeed = NormalSpeed;
+					bIsInCrouchTransition = true;
 					T_GetUp.PlayFromStart();
 					IsCrouched = false;
 					DisableVignetteWhenCrouched();
 				}
 			}
 			else {
+				if (bIsInCrouchTransition)
+				{
+					T_GetUp.Stop();
+					T_Crouch.Stop();
+				}
+
 				//GetCharacterMovement()->MaxWalkSpeed = CrouchedWalkSpeed;
 				NormalSpeed = CrouchedWalkSpeed;
 				GetCharacterMovement()->MaxWalkSpeed = NormalSpeed;
+				bIsInCrouchTransition = true;
 				T_Crouch.PlayFromStart();
 				IsCrouched = true;
 				EnableVignetteWhenCrouched();
@@ -440,14 +458,24 @@ void AFPCharacter::DisableVignetteWhenCrouched_Implementation()
 void AFPCharacter::GetUpProgress(float Value)
 {
 	float NewValue = FMath::Lerp(CrouchedCapsuleSize, DefaultCapsuleSize, Value);
-	GetCapsuleComponent()->SetCapsuleHalfHeight(NewValue);
+	GetCapsuleComponent()->SetCapsuleHalfHeight(FMath::Clamp(NewValue, CrouchedCapsuleSize, DefaultCapsuleSize));
+	if (NewValue >= DefaultCapsuleSize)
+	{
+		T_GetUp.Stop();
+		bIsInCrouchTransition = false;
+	}
 }
 
 // Called by timeline to have a prgressive crouch movement
 void AFPCharacter::CrouchProgress(float Value)
 {
 	float NewValue = FMath::Lerp(DefaultCapsuleSize, CrouchedCapsuleSize, Value);
-	GetCapsuleComponent()->SetCapsuleHalfHeight(NewValue);
+	GetCapsuleComponent()->SetCapsuleHalfHeight(FMath::Clamp(NewValue, CrouchedCapsuleSize, DefaultCapsuleSize));
+	if (NewValue <= CrouchedCapsuleSize) 
+	{
+		T_Crouch.Stop();
+		bIsInCrouchTransition = false;
+	}
 }
 
 void AFPCharacter::HeadBobbing() {
@@ -500,4 +528,9 @@ bool AFPCharacter::CheckCrouchingObstacle()
 	bool res = !GetWorld()->SweepMultiByChannel(OutResults, StartingLocation, EndingLocation, FQuat::Identity, ECollisionChannel::ECC_Visibility, MySphere);
 
 	return res;
+}
+
+void AFPCharacter::CrouchTimelineFinishedCallback() 
+{
+	bIsInCrouchTransition = false;
 }

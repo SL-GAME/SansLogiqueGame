@@ -152,6 +152,9 @@ protected:
 
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
 		bool bIsCurrentlySprinting = false;
+
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = FPCharacter, meta = (AllowPrivateAccess = "true"))
+		bool bIsInCrouchTransition = false;
 		
 		UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 		UPlayerAbilityComponent* CurrentAbility;
@@ -241,6 +244,9 @@ public:
 	void SetCurrentAbility(UPlayerAbilityComponent* newAbility);
 	void ToggleRunningState();
 	bool CheckCrouchingObstacle();
+
+	UFUNCTION()
+	void CrouchTimelineFinishedCallback();
 
 protected:
 	
