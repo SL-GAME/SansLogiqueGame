@@ -25,5 +25,8 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Actor", meta = (DefaultToSelf = "Target"))
 		static bool IsInputEnabled(APawn* Target);
+
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Get App Version"), Category = "Game Config")
+		static FString GetAppVersion();
 	
 };
