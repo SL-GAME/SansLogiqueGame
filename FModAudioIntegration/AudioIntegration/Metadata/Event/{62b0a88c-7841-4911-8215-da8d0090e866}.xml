@@ -76,7 +76,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{93fcded1-e47c-488a-a464-1fbdd80018d8}">
 		<property name="volume">
-			<value>-9.5</value>
+			<value>-10</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{783d09ce-2fef-455b-a0ca-f5c2c2e07afc}</destination>
@@ -136,6 +136,7 @@
 	<object class="MixerBusEffectChain" id="{783d09ce-2fef-455b-a0ca-f5c2c2e07afc}">
 		<relationship name="effects">
 			<destination>{86f20782-be9b-46c6-a937-7a7fdb2593e3}</destination>
+			<destination>{7a6b09c4-bd85-4589-b13e-5634d09ba611}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{efb5c95a-40fa-4ee5-bb0f-45d7a7295888}" />
@@ -155,6 +156,14 @@
 	</object>
 	<object class="MixerBusPanner" id="{411a9645-3773-4a99-aa89-a8233cf18299}" />
 	<object class="MixerBusFader" id="{86f20782-be9b-46c6-a937-7a7fdb2593e3}" />
+	<object class="ThreeEQEffect" id="{7a6b09c4-bd85-4589-b13e-5634d09ba611}">
+		<property name="midGain">
+			<value>-6</value>
+		</property>
+		<property name="highGain">
+			<value>-6</value>
+		</property>
+	</object>
 	<object class="AutomationPoint" id="{f74f1d27-eaf7-4176-8fc2-384a6405a0c8}">
 		<property name="position">
 			<value>0</value>

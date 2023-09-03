@@ -79,3 +79,4 @@ DerivedDataCache/*
 # Fmod Studio Plugin
 Plugins/FMODStudio
 FModAudioIntegration/AudioIntegration/.cache
+*.asd
